@@ -1,6 +1,6 @@
 import type { NextRequest } from 'next/server';
 
-import { getCoinsMarketData } from '@/lib/services/coingecko/api';
+import { getCoinsMarketData } from '@/lib/services/coingecko/requests';
 import { getCoinsWithMarketDataParams } from '@/lib/services/coingecko/schemas';
 
 export async function GET(request: NextRequest) {
