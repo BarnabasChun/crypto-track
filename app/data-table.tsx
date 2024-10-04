@@ -15,20 +15,31 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { DataTablePagination } from './data-table-pagination';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  rowCount: number;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  rowCount,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    manualPagination: true, //turn off client-side pagination
+    rowCount,
+    initialState: {
+      pagination: {
+        pageIndex: 0,
+        pageSize: 100,
+      },
+    },
   });
 
   return (
@@ -75,6 +86,8 @@ export function DataTable<TData, TValue>({
           )}
         </TableBody>
       </Table>
+
+      <DataTablePagination table={table} />
     </div>
   );
 }
