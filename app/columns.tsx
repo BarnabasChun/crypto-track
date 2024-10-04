@@ -29,14 +29,14 @@ export const columns = [
     cell: ({ row }) => (
       <Link
         href={`/coins/${row.original.id}`}
-        className="flex items-center gap-2 hover:underline"
+        className="flex items-center gap-2 font-semibold"
       >
         <Image
           src={row.original.imageUrl}
           alt={`${row.original.name} logo`}
-          width={24}
-          height={24}
-          className="w-6 h-6 rounded-full"
+          width={48}
+          height={48}
+          className="w-6 h-6"
         />
         {row.original.name}{' '}
         <span className="text-muted-foreground">{row.original.symbol}</span>
