@@ -1,13 +1,19 @@
 import { getCoinsMarketData } from '@/lib/services/coingecko/requests';
 
-export default async function Page() {
+import { columns } from './columns';
+import { DataTable } from './data-table';
+
+export default async function Home() {
   const coins = await getCoinsMarketData();
 
-  console.log(coins);
-
   return (
-    <div>
-      <h1>Home</h1>
+    <div className="container mx-auto py-10">
+      <h1 className="text-2xl font-bold mb-4">
+        Cryptocurrency Prices by Market Cap
+      </h1>
+
+      {/* @ts-expect-error https://github.com/TanStack/table/issues/4302#issuecomment-1883209783 */}
+      <DataTable columns={columns} data={coins} />
     </div>
   );
 }
