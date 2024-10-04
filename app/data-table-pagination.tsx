@@ -17,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { PER_PAGE_OPTIONS } from '@/lib/constants';
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
@@ -66,7 +67,7 @@ export function DataTablePagination<TData>({
             <SelectValue placeholder={table.getState().pagination.pageSize} />
           </SelectTrigger>
           <SelectContent side="top">
-            {[25, 50, 100, 250].map((pageSize) => (
+            {PER_PAGE_OPTIONS.map((pageSize) => (
               <SelectItem key={pageSize} value={`${pageSize}`}>
                 {pageSize}
               </SelectItem>

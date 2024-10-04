@@ -16,6 +16,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { DataTablePagination } from './data-table-pagination';
+import { DEFAULT_PER_PAGE_OPTION } from '@/lib/constants';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -37,7 +38,7 @@ export function DataTable<TData, TValue>({
     initialState: {
       pagination: {
         pageIndex: 0,
-        pageSize: 100,
+        pageSize: DEFAULT_PER_PAGE_OPTION,
       },
     },
   });

@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { formatCurrency } from '@coingecko/cryptoformat';
 
 import { transformToSingleDigitPercent } from '@/lib/formatting';
+import { DEFAULT_PER_PAGE_OPTION } from '@/lib/constants';
 
 export const coinsList = z.array(z.object({}));
 
@@ -88,7 +89,7 @@ export const getCoinsWithMarketDataParams = z.object({
   perPage: z
     .string()
     .optional()
-    .transform((val) => (val ? parseInt(val) : 100)),
+    .transform((val) => (val ? parseInt(val) : DEFAULT_PER_PAGE_OPTION)),
 });
 
 export type GetCoinsWithMarketDataParams = z.input<
