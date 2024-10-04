@@ -84,18 +84,18 @@ export const coinsWithMarketData = z.array(coinWithMarketData);
 export const getCoinsWithMarketDataParams = z.object({
   currency: z
     .string()
-    .optional()
+    .nullish()
     .transform((val) => val ?? 'usd'),
   page: z
     .string()
-    .optional()
+    .nullish()
     .transform((val) => (val ? parseInt(val) : 1)),
   perPage: z
     .string()
-    .optional()
+    .nullish()
     .transform((val) => (val ? parseInt(val) : DEFAULT_PER_PAGE_OPTION)),
 });
 
-export type GetCoinsWithMarketDataParams = z.input<
+export type GetCoinsWithMarketDataParams = z.output<
   typeof getCoinsWithMarketDataParams
 >;

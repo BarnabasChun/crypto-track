@@ -5,9 +5,15 @@ import {
 
 import { columns } from './columns';
 import { DataTable } from './data-table';
+import { PageProps } from '@/lib/types';
+import { getCoinsWithMarketDataParams } from '@/lib/services/coingecko/schemas';
 
-export default async function Home() {
-  const coins = await getCoinsMarketData();
+export default async function Home({ searchParams }: PageProps) {
+  const params = getCoinsWithMarketDataParams.parse({
+    page: searchParams.page,
+    perPage: searchParams.per_page,
+  });
+  const coins = await getCoinsMarketData(params);
   const coinsListCount = await getCoinsListCount();
 
   return (
