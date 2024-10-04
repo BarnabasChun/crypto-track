@@ -6,7 +6,7 @@ import { createColumnHelper } from '@tanstack/react-table';
 import { Star } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import PriceChangeCell from './price-change-cell';
+import PriceChangePercentageCell from './price-change-percentage-cell';
 
 const columnHelper = createColumnHelper<CoinWithMarketData>();
 
@@ -31,13 +31,17 @@ export const columns = [
         href={`/coins/${row.original.id}`}
         className="flex items-center gap-2 font-semibold"
       >
-        <Image
-          src={row.original.imageUrl}
-          alt={`${row.original.name} logo`}
-          width={48}
-          height={48}
-          className="w-6 h-6"
-        />
+        {row.original.imageUrl ? (
+          <Image
+            src={row.original.imageUrl}
+            alt={`${row.original.name} logo`}
+            width={48}
+            height={48}
+            className="w-6 h-6"
+          />
+        ) : (
+          <div className="w-6 h-6 mr-2 bg-gray-200"> </div>
+        )}
         {row.original.name}{' '}
         <span className="text-muted-foreground">{row.original.symbol}</span>
       </Link>
@@ -52,27 +56,27 @@ export const columns = [
   columnHelper.accessor('raw.priceChange1h', {
     header: () => <div className="text-right">1h</div>,
     cell: ({ row }) => (
-      <PriceChangeCell
-        priceChangeAmount={row.original.raw.priceChange1h}
-        priceChangeDisplay={row.original.display.priceChange1h}
+      <PriceChangePercentageCell
+        priceChangePercentageAmount={row.original.raw.priceChange1h}
+        priceChangePercentageDisplay={row.original.display.priceChange1h}
       />
     ),
   }),
   columnHelper.accessor('raw.priceChange24h', {
     header: () => <div className="text-right">24h</div>,
     cell: ({ row }) => (
-      <PriceChangeCell
-        priceChangeAmount={row.original.raw.priceChange24h}
-        priceChangeDisplay={row.original.display.priceChange24h}
+      <PriceChangePercentageCell
+        priceChangePercentageAmount={row.original.raw.priceChange24h}
+        priceChangePercentageDisplay={row.original.display.priceChange24h}
       />
     ),
   }),
   columnHelper.accessor('raw.priceChange7d', {
     header: () => <div className="text-right">7d</div>,
     cell: ({ row }) => (
-      <PriceChangeCell
-        priceChangeAmount={row.original.raw.priceChange7d}
-        priceChangeDisplay={row.original.display.priceChange7d}
+      <PriceChangePercentageCell
+        priceChangePercentageAmount={row.original.raw.priceChange7d}
+        priceChangePercentageDisplay={row.original.display.priceChange7d}
       />
     ),
   }),
