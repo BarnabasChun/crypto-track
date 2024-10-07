@@ -12,19 +12,12 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
-
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { DEFAULT_PER_PAGE_OPTION, PER_PAGE_OPTIONS } from '@/lib/constants';
+import { DEFAULT_PER_PAGE_OPTION } from '@/lib/constants';
 import { Button } from '@/components/ui/button';
 import usePagination, {
   PAGINATION_ITEM_TYPES,
 } from '@/lib/hooks/usePagination/usePagination';
+import RowsPerPageSelector from './rows-per-page-selector';
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
@@ -144,26 +137,12 @@ export function DataTablePagination<TData>({
         </Pagination>
       </div>
 
-      <div className="flex items-center space-x-2">
-        <p className="text-sm font-medium">Rows</p>
-        <Select
-          value={`${rowsPerPage}`}
-          onValueChange={(value) => {
-            router.push(`${pathname}?${createQueryString('per_page', value)}`);
-          }}
-        >
-          <SelectTrigger className="h-8 w-[70px]">
-            <SelectValue placeholder={rowsPerPage} />
-          </SelectTrigger>
-          <SelectContent side="top">
-            {PER_PAGE_OPTIONS.map((pageSize) => (
-              <SelectItem key={pageSize} value={`${pageSize}`}>
-                {pageSize}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+      <RowsPerPageSelector
+        value={rowsPerPage}
+        onChange={(value) => {
+          router.push(`${pathname}?${createQueryString('per_page', value)}`);
+        }}
+      />
     </div>
   );
 }
