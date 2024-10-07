@@ -22,17 +22,20 @@ import {
 } from '@/components/ui/select';
 import { DEFAULT_PER_PAGE_OPTION, PER_PAGE_OPTIONS } from '@/lib/constants';
 import { Button } from '@/components/ui/button';
-import { getCoinsWithMarketDataParams } from '@/lib/services/coingecko/schemas';
 import usePagination, {
   PAGINATION_ITEM_TYPES,
 } from '@/lib/hooks/usePagination/usePagination';
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
+  currentPage: number;
+  rowsPerPage: number;
 }
 
 export function DataTablePagination<TData>({
   table,
+  currentPage,
+  rowsPerPage,
 }: DataTablePaginationProps<TData>) {
   const router = useRouter();
   const pathname = usePathname();
@@ -45,11 +48,6 @@ export function DataTablePagination<TData>({
     return params.toString();
   };
 
-  const { page: currentPage, perPage: rowsPerPage } =
-    getCoinsWithMarketDataParams.parse({
-      page: searchParams.get('page'),
-      perPage: searchParams.get('per_page'),
-    });
   const totalRows = table.getRowCount();
 
   const beginningResults = (currentPage - 1) * rowsPerPage + 1;

@@ -16,29 +16,22 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { DataTablePagination } from './data-table-pagination';
-import { DEFAULT_PER_PAGE_OPTION } from '@/lib/constants';
-import { useSearchParams } from 'next/navigation';
-import { getCoinsWithMarketDataParams } from '@/lib/services/coingecko/schemas';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   rowCount: number;
+  currentPage: number;
+  rowsPerPage: number;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   rowCount,
+  rowsPerPage,
+  currentPage,
 }: DataTableProps<TData, TValue>) {
-  const searchParams = useSearchParams();
-
-  const { page: currentPage, perPage: rowsPerPage } =
-    getCoinsWithMarketDataParams.parse({
-      page: searchParams.get('page'),
-      perPage: searchParams.get('per_page'),
-    });
-
   const table = useReactTable({
     data,
     columns,
@@ -98,7 +91,11 @@ export function DataTable<TData, TValue>({
         </TableBody>
       </Table>
 
-      <DataTablePagination table={table} />
+      <DataTablePagination
+        table={table}
+        rowsPerPage={rowsPerPage}
+        currentPage={currentPage}
+      />
     </div>
   );
 }
