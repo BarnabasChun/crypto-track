@@ -66,10 +66,6 @@ export function DataTablePagination<TData>({
       query: { per_page: rowsPerPage },
     }),
   };
-  const previousPageHref =
-    currentPage === 2
-      ? firstPageHref
-      : { query: createQueryString('page', (currentPage - 1).toString()) };
 
   return (
     <div className="p-2 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
@@ -82,6 +78,12 @@ export function DataTablePagination<TData>({
           <PaginationContent>
             {paginationItems.map((paginationItem) => {
               const { next, previous, ellipsis, page } = PAGINATION_ITEM_TYPES;
+              const pageQuery = {
+                query: createQueryString(
+                  'page',
+                  paginationItem.pageNumber!.toString()
+                ),
+              };
 
               if (
                 paginationItem.type === previous ||
@@ -95,16 +97,11 @@ export function DataTablePagination<TData>({
                       disabled={paginationItem.disabled}
                     >
                       {paginationItem.type === previous ? (
-                        <PaginationPrevious href={previousPageHref} />
-                      ) : (
-                        <PaginationNext
-                          href={{
-                            query: createQueryString(
-                              'page',
-                              (currentPage + 1).toString()
-                            ),
-                          }}
+                        <PaginationPrevious
+                          href={currentPage === 2 ? firstPageHref : pageQuery}
                         />
+                      ) : (
+                        <PaginationNext href={pageQuery} />
                       )}
                     </Button>
                   </PaginationItem>
@@ -123,12 +120,7 @@ export function DataTablePagination<TData>({
                         href={
                           paginationItem.pageNumber === 1
                             ? firstPageHref
-                            : {
-                                query: createQueryString(
-                                  'page',
-                                  paginationItem.pageNumber?.toString()!
-                                ),
-                              }
+                            : pageQuery
                         }
                       >
                         {paginationItem.pageNumber}
