@@ -23,6 +23,9 @@ import {
 import { DEFAULT_PER_PAGE_OPTION, PER_PAGE_OPTIONS } from '@/lib/constants';
 import { Button } from '@/components/ui/button';
 import { getCoinsWithMarketDataParams } from '@/lib/services/coingecko/schemas';
+import usePagination, {
+  PAGINATION_ITEM_TYPES,
+} from '@/lib/hooks/usePagination/usePagination';
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
@@ -53,6 +56,11 @@ export function DataTablePagination<TData>({
   const endResults = Math.min(rowsPerPage * currentPage, totalRows);
 
   const lastPageNumber = Math.ceil(totalRows / rowsPerPage);
+  const { items: paginationItems } = usePagination({
+    currentPage,
+    totalPageCount: lastPageNumber,
+    // TODO: check for screen width to apply siblingCount: 0 to reduce pagination items on smaller devices
+  });
 
   const firstPageHref = {
     pathname: '/',
@@ -74,73 +82,74 @@ export function DataTablePagination<TData>({
       <div>
         <Pagination>
           <PaginationContent>
-            <PaginationItem>
-              <Button
-                variant="ghost"
-                className="h-8 w-8 p-0"
-                disabled={!table.getCanPreviousPage()}
-              >
-                <PaginationPrevious href={previousPageHref} />
-              </Button>
-            </PaginationItem>
+            {paginationItems.map((paginationItem) => {
+              const { next, previous, ellipsis, page } = PAGINATION_ITEM_TYPES;
 
-            <PaginationItem>
-              <Button variant="ghost" disabled={currentPage === 1}>
-                <PaginationLink
-                  isActive={currentPage === 1}
-                  href={firstPageHref}
-                >
-                  1
-                </PaginationLink>
-              </Button>
-            </PaginationItem>
+              if (
+                paginationItem.type === previous ||
+                paginationItem.type === next
+              ) {
+                return (
+                  <PaginationItem>
+                    <Button
+                      variant="ghost"
+                      className="h-8 w-8 p-0"
+                      disabled={paginationItem.disabled}
+                    >
+                      {paginationItem.type === previous ? (
+                        <PaginationPrevious href={previousPageHref} />
+                      ) : (
+                        <PaginationNext
+                          href={{
+                            query: createQueryString(
+                              'page',
+                              (currentPage + 1).toString()
+                            ),
+                          }}
+                        />
+                      )}
+                    </Button>
+                  </PaginationItem>
+                );
+              }
 
-            <PaginationItem>
-              <Button variant="ghost" disabled={currentPage === 2}>
-                <PaginationLink
-                  href={{
-                    query: createQueryString('page', '2'),
-                  }}
-                  isActive={currentPage === 2}
-                >
-                  2
-                </PaginationLink>
-              </Button>
-            </PaginationItem>
+              if (paginationItem.type === page) {
+                return (
+                  <PaginationItem>
+                    <Button
+                      variant="ghost"
+                      disabled={currentPage === paginationItem.pageNumber}
+                    >
+                      <PaginationLink
+                        isActive={paginationItem.isActive}
+                        href={
+                          paginationItem.pageNumber === 1
+                            ? firstPageHref
+                            : {
+                                query: createQueryString(
+                                  'page',
+                                  paginationItem.pageNumber?.toString()!
+                                ),
+                              }
+                        }
+                      >
+                        {paginationItem.pageNumber}
+                      </PaginationLink>
+                    </Button>
+                  </PaginationItem>
+                );
+              }
 
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
+              if (paginationItem.type === ellipsis) {
+                return (
+                  <PaginationItem>
+                    <PaginationEllipsis />
+                  </PaginationItem>
+                );
+              }
 
-            <PaginationItem>
-              <Button variant="ghost" disabled={currentPage === lastPageNumber}>
-                <PaginationLink
-                  isActive={lastPageNumber === currentPage}
-                  href={{
-                    query: createQueryString('page', lastPageNumber.toString()),
-                  }}
-                >
-                  {lastPageNumber}
-                </PaginationLink>
-              </Button>
-            </PaginationItem>
-
-            <PaginationItem>
-              <Button
-                variant="ghost"
-                className="h-8 w-8 p-0"
-                disabled={!table.getCanNextPage()}
-              >
-                <PaginationNext
-                  href={{
-                    query: createQueryString(
-                      'page',
-                      (currentPage + 1).toString()
-                    ),
-                  }}
-                />
-              </Button>
-            </PaginationItem>
+              return null;
+            })}
           </PaginationContent>
         </Pagination>
       </div>
