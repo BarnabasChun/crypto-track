@@ -2,7 +2,7 @@ import { renderHook } from '@testing-library/react-hooks';
 
 import usePagination, { PAGINATION_ITEM_TYPES } from './usePagination';
 
-const { next, previous, ellipsis } = PAGINATION_ITEM_TYPES;
+const { next, previous, leftEllipsis, rightEllipsis } = PAGINATION_ITEM_TYPES;
 
 describe('usePagination', () => {
   it('it returns one page by default', () => {
@@ -81,7 +81,7 @@ describe('usePagination', () => {
     expect(items[3]).toHaveProperty('pageNumber', 3);
     expect(items[4]).toHaveProperty('pageNumber', 4);
     expect(items[5]).toHaveProperty('pageNumber', 5);
-    expect(items[6]).toHaveProperty('type', ellipsis);
+    expect(items[6]).toHaveProperty('type', rightEllipsis);
     expect(items[7]).toHaveProperty('pageNumber', 8);
   });
 
@@ -94,7 +94,7 @@ describe('usePagination', () => {
 
     // prev, 1, ..., 2, 3, 4, 5, 6, next
     expect(items[1]).toHaveProperty('pageNumber', 1);
-    expect(items[2]).toHaveProperty('type', ellipsis);
+    expect(items[2]).toHaveProperty('type', leftEllipsis);
     expect(items[3]).toHaveProperty('pageNumber', 2);
     expect(items[4]).toHaveProperty('pageNumber', 3);
     expect(items[5]).toHaveProperty('pageNumber', 4);
@@ -110,11 +110,11 @@ describe('usePagination', () => {
     } = renderHook(() => usePagination({ totalPageCount: 9, currentPage: 5 }));
     // prev, 1, ellipsis, 4, 5, 6, ellipsis, 7, next
     expect(items[1]).toHaveProperty('pageNumber', 1);
-    expect(items[2]).toHaveProperty('type', ellipsis);
+    expect(items[2]).toHaveProperty('type', leftEllipsis);
     expect(items[3]).toHaveProperty('pageNumber', 4);
     expect(items[4]).toHaveProperty('pageNumber', 5);
     expect(items[5]).toHaveProperty('pageNumber', 6);
-    expect(items[6]).toHaveProperty('type', ellipsis);
+    expect(items[6]).toHaveProperty('type', rightEllipsis);
     expect(items[7]).toHaveProperty('pageNumber', 9);
   });
 
@@ -130,13 +130,13 @@ describe('usePagination', () => {
     // prev, 1, ellipsis, 4, ellipsis, 7, next
     expect(items).toHaveLength(7);
     expect(items[1]).toHaveProperty('pageNumber', 1);
-    expect(items[2]).toHaveProperty('type', ellipsis);
+    expect(items[2]).toHaveProperty('type', leftEllipsis);
     expect(items[3]).toMatchObject({
       pageNumber: 4,
       isActive: true,
       type: 'page',
     });
-    expect(items[4]).toHaveProperty('type', ellipsis);
+    expect(items[4]).toHaveProperty('type', rightEllipsis);
     expect(items[5]).toHaveProperty('pageNumber', 7);
   });
 
@@ -151,13 +151,13 @@ describe('usePagination', () => {
     expect(items).toHaveLength(11);
 
     expect(items[1]).toHaveProperty('pageNumber', 1);
-    expect(items[2]).toHaveProperty('type', ellipsis);
+    expect(items[2]).toHaveProperty('type', leftEllipsis);
     expect(items[3]).toHaveProperty('pageNumber', 4);
     expect(items[4]).toHaveProperty('pageNumber', 5);
     expect(items[5]).toHaveProperty('pageNumber', 6);
     expect(items[6]).toHaveProperty('pageNumber', 7);
     expect(items[7]).toHaveProperty('pageNumber', 8);
-    expect(items[8]).toHaveProperty('type', ellipsis);
+    expect(items[8]).toHaveProperty('type', rightEllipsis);
     expect(items[9]).toHaveProperty('pageNumber', 11);
   });
 });

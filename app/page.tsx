@@ -22,8 +22,14 @@ export default async function Home({ searchParams }: PageProps) {
         Cryptocurrency Prices by Market Cap
       </h1>
 
-      {/* @ts-expect-error https://github.com/TanStack/table/issues/4302#issuecomment-1883209783 */}
-      <DataTable columns={columns} data={coins} rowCount={coinsListCount} />
+      <DataTable
+        // @ts-expect-error https://github.com/TanStack/table/issues/4302#issuecomment-1883209783
+        columns={columns}
+        data={coins}
+        rowCount={coinsListCount}
+        rowsPerPage={params.perPage}
+        currentPage={params.page}
+      />
     </div>
   );
 }

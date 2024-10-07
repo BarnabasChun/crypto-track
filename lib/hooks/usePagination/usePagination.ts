@@ -8,17 +8,19 @@ export const PAGINATION_ITEM_TYPES = {
   previous: 'previous',
   next: 'next',
   page: 'page',
-  ellipsis: 'ellipsis',
+  leftEllipsis: 'left-ellipsis',
+  rightEllipsis: 'right-ellipsis',
 } as const;
 
 type UsePaginationItemType =
   (typeof PAGINATION_ITEM_TYPES)[keyof typeof PAGINATION_ITEM_TYPES];
 
-type UsePaginationItem = {
+export type UsePaginationItem = {
   isActive: boolean;
   pageNumber: number | null;
   type: UsePaginationItemType;
   disabled: boolean;
+  id: number | string;
 };
 
 type UsePaginationResult = {
@@ -29,7 +31,8 @@ export default function usePagination(
   props: UsePaginationProps = {}
 ): UsePaginationResult {
   const { totalPageCount = 1, currentPage = 1, siblingCount = 1 } = props;
-  const { next, page, previous, ellipsis } = PAGINATION_ITEM_TYPES;
+  const { next, page, previous, leftEllipsis, rightEllipsis } =
+    PAGINATION_ITEM_TYPES;
 
   const getItems = () => {
     // # of pages on side of current + (5 = current + 1st page + last page + ellipsis * 2)
@@ -59,7 +62,7 @@ export default function usePagination(
         { length: maxDisplayedPaginationItems - 2 },
         (_, i) => i + 1
       );
-      return [previous, ...leftRange, ellipsis, lastPageNumber, next];
+      return [previous, ...leftRange, rightEllipsis, lastPageNumber, next];
     }
 
     if (showLeftEllipsis && !showRightEllipsis) {
@@ -67,7 +70,7 @@ export default function usePagination(
         { length: maxDisplayedPaginationItems - 2 },
         (_, i) => rightSiblingPageNumber - i
       ).reverse();
-      return [previous, firstPageNumber, ellipsis, ...rightRange, next];
+      return [previous, firstPageNumber, leftEllipsis, ...rightRange, next];
     }
 
     if (showLeftEllipsis && showRightEllipsis) {
@@ -79,9 +82,9 @@ export default function usePagination(
       return [
         previous,
         firstPageNumber,
-        ellipsis,
+        leftEllipsis,
         ...middleRange,
-        ellipsis,
+        rightEllipsis,
         lastPageNumber,
         next,
       ];
@@ -108,6 +111,7 @@ export default function usePagination(
         isActive: currentPage === item,
         type: page,
         disabled: false,
+        id: item,
       };
     }
 
@@ -119,6 +123,7 @@ export default function usePagination(
       isActive: currentPage === pageNumber,
       disabled:
         item === previous ? currentPage === 1 : currentPage === totalPageCount,
+      id: item,
     };
   });
 

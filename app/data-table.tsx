@@ -15,7 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { DataTablePagination } from './data-table-pagination';
+import { DataTableFooter } from './data-table-footer';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -91,7 +91,7 @@ export function DataTable<TData, TValue>({
         </TableBody>
       </Table>
 
-      <DataTablePagination
+      <DataTableFooter
         table={table}
         rowsPerPage={rowsPerPage}
         currentPage={currentPage}
