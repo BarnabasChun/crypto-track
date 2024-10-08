@@ -23,7 +23,7 @@ export function DataTableFooter<TData>({
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const createQueryString = (name: string, value: string) => {
+  const createQueryString = (name: 'page' | 'per_page', value: string) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set(name, value);
 
