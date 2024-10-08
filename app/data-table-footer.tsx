@@ -25,9 +25,17 @@ export function DataTableFooter<TData>({
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const createQueryString = (name: 'page' | 'per_page', value: string) => {
+  const createQueryString = (
+    name: 'page' | 'per_page',
+    value: string,
+    paramsToDelete: string[] = []
+  ) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set(name, value);
+
+    for (const p of paramsToDelete) {
+      params.delete(p);
+    }
 
     return params.toString();
   };
@@ -73,7 +81,10 @@ export function DataTableFooter<TData>({
       <RowsPerPageSelector
         value={rowsPerPage}
         onChange={(value) => {
-          router.push(`${pathname}?${createQueryString('per_page', value)}`);
+          resetSorting();
+          router.push(
+            `${pathname}?${createQueryString('per_page', value, currentPage > 1 ? ['page'] : undefined)}`
+          );
         }}
       />
     </div>
