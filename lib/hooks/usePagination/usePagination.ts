@@ -111,7 +111,7 @@ export default function usePagination(
         isActive: currentPage === item,
         type: page,
         disabled: false,
-        id: item,
+        id: `page-${item}`,
       };
     }
 
