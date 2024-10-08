@@ -4,8 +4,18 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getSortedRowModel,
+  RowData,
+  SortingState,
   useReactTable,
 } from '@tanstack/react-table';
+
+declare module '@tanstack/react-table' {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  interface ColumnMeta<TData extends RowData, TValue> {
+    size?: number;
+  }
+}
 
 import {
   Table,
@@ -16,6 +26,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { DataTableFooter } from './data-table-footer';
+import { useState } from 'react';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -32,13 +43,25 @@ export function DataTable<TData, TValue>({
   rowsPerPage,
   currentPage,
 }: DataTableProps<TData, TValue>) {
+  const [sorting, setSorting] = useState<SortingState>([
+    {
+      id: 'rank',
+      desc: false,
+    },
+  ]);
+
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     manualPagination: true, //turn off client-side pagination
     rowCount,
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
+    enableSortingRemoval: false, // disable the ability to remove sorting on columns (always none -> asc -> desc -> asc)
+    enableMultiSort: false, // disable multi-sorting for the entire table
     state: {
+      sorting,
       pagination: {
         pageIndex: currentPage - 1,
         pageSize: rowsPerPage,
@@ -54,13 +77,34 @@ export function DataTable<TData, TValue>({
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
+                  <TableHead
+                    key={header.id}
+                    style={{
+                      width: header.column.columnDef.meta?.size ?? 'auto',
+                    }}
+                  >
+                    {header.isPlaceholder ? null : (
+                      <div
+                        className={`${
+                          header.column.getCanSort()
+                            ? 'cursor-pointer select-none'
+                            : ''
+                        }`}
+                        onClick={header.column.getToggleSortingHandler()}
+                        title={
+                          header.column.getCanSort()
+                            ? header.column.getNextSortingOrder() === 'asc'
+                              ? 'Sort ascending'
+                              : 'Sort descending'
+                            : undefined
+                        }
+                      >
+                        {flexRender(
                           header.column.columnDef.header,
                           header.getContext()
                         )}
+                      </div>
+                    )}
                   </TableHead>
                 );
               })}
