@@ -12,12 +12,14 @@ interface DataTableFooterProps<TData> {
   table: Table<TData>;
   currentPage: number;
   rowsPerPage: number;
+  resetSorting(): void;
 }
 
 export function DataTableFooter<TData>({
   table,
   currentPage,
   rowsPerPage,
+  resetSorting,
 }: DataTableFooterProps<TData>) {
   const router = useRouter();
   const pathname = usePathname();
@@ -61,6 +63,7 @@ export function DataTableFooter<TData>({
                 createPageQueryString={createPageQueryString}
                 rowsPerPage={rowsPerPage}
                 currentPage={currentPage}
+                resetSorting={resetSorting}
               />
             ))}
           </PaginationContent>

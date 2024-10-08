@@ -36,6 +36,13 @@ interface DataTableProps<TData, TValue> {
   rowsPerPage: number;
 }
 
+const INITIAL_SORTING_STATE = [
+  {
+    id: 'rank',
+    desc: false,
+  },
+];
+
 export function DataTable<TData, TValue>({
   columns,
   data,
@@ -43,12 +50,9 @@ export function DataTable<TData, TValue>({
   rowsPerPage,
   currentPage,
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([
-    {
-      id: 'rank',
-      desc: false,
-    },
-  ]);
+  const [sorting, setSorting] = useState<SortingState>(INITIAL_SORTING_STATE);
+
+  const resetSorting = () => setSorting(INITIAL_SORTING_STATE);
 
   const table = useReactTable({
     data,
@@ -139,6 +143,7 @@ export function DataTable<TData, TValue>({
         table={table}
         rowsPerPage={rowsPerPage}
         currentPage={currentPage}
+        resetSorting={resetSorting}
       />
     </div>
   );

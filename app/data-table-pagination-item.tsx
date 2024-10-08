@@ -17,6 +17,7 @@ export type DataTablePaginationItem = {
   currentPage: number;
   rowsPerPage: number;
   createPageQueryString(pageNumber: number | null): string;
+  resetSorting(): void;
 };
 
 export default function DataTablePaginationItem({
@@ -24,6 +25,7 @@ export default function DataTablePaginationItem({
   currentPage,
   createPageQueryString,
   rowsPerPage,
+  resetSorting,
 }: DataTablePaginationItem) {
   const { next, previous, leftEllipsis, rightEllipsis, page } =
     PAGINATION_ITEM_TYPES;
@@ -54,6 +56,7 @@ export default function DataTablePaginationItem({
           variant="ghost"
           className="h-8 w-8 p-0"
           disabled={item.disabled}
+          onClick={resetSorting}
         >
           {item.type === previous ? (
             <PaginationPrevious
@@ -70,7 +73,11 @@ export default function DataTablePaginationItem({
   if (item.type === page) {
     return (
       <PaginationItem>
-        <Button variant="ghost" disabled={currentPage === item.pageNumber}>
+        <Button
+          variant="ghost"
+          disabled={currentPage === item.pageNumber}
+          onClick={resetSorting}
+        >
           <PaginationLink
             isActive={item.isActive}
             href={item.pageNumber === 1 ? firstPageHref : pageQuery}
