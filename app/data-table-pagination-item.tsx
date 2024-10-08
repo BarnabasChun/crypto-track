@@ -27,6 +27,15 @@ export default function DataTablePaginationItem({
 }: DataTablePaginationItem) {
   const { next, previous, leftEllipsis, rightEllipsis, page } =
     PAGINATION_ITEM_TYPES;
+
+  if (item.type === leftEllipsis || item.type === rightEllipsis) {
+    return (
+      <PaginationItem>
+        <PaginationEllipsis />
+      </PaginationItem>
+    );
+  }
+
   const pageQuery = {
     query: createPageQueryString(item.pageNumber),
   };
@@ -69,14 +78,6 @@ export default function DataTablePaginationItem({
             {item.pageNumber}
           </PaginationLink>
         </Button>
-      </PaginationItem>
-    );
-  }
-
-  if (item.type === leftEllipsis || item.type === rightEllipsis) {
-    return (
-      <PaginationItem>
-        <PaginationEllipsis />
       </PaginationItem>
     );
   }
