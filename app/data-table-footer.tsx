@@ -38,10 +38,10 @@ export function DataTableFooter<TData>({
   const beginningResults = (currentPage - 1) * rowsPerPage + 1;
   const endResults = Math.min(rowsPerPage * currentPage, totalRows);
 
-  const lastPageNumber = Math.ceil(totalRows / rowsPerPage);
+  const totalPageCount = table.getPageCount();
   const { items: paginationItems } = usePagination({
     currentPage,
-    totalPageCount: lastPageNumber,
+    totalPageCount,
     // TODO: check for screen width to apply siblingCount: 0 to reduce pagination items on smaller devices
   });
 
