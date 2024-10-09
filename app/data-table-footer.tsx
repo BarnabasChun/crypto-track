@@ -7,6 +7,7 @@ import { Pagination, PaginationContent } from '@/components/ui/pagination';
 import usePagination from '@/lib/hooks/usePagination/usePagination';
 import RowsPerPageSelector from './rows-per-page-selector';
 import DataTablePaginationItem from './data-table-pagination-item';
+import { DEFAULT_PER_PAGE_OPTION } from '@/lib/constants';
 
 interface DataTableFooterProps<TData> {
   table: Table<TData>;
@@ -82,8 +83,16 @@ export function DataTableFooter<TData>({
         value={rowsPerPage}
         onChange={(value) => {
           resetSorting();
+          const paramsToDelete =
+            currentPage > 1
+              ? [
+                  'page',
+                  Number(value) === DEFAULT_PER_PAGE_OPTION ? 'per_page' : '',
+                ]
+              : undefined;
+
           router.push(
-            `${pathname}?${createQueryString('per_page', value, currentPage > 1 ? ['page'] : undefined)}`
+            `${pathname}?${createQueryString('per_page', value, paramsToDelete)}`
           );
         }}
       />

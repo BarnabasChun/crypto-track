@@ -18,9 +18,11 @@ export default function RowsPerPageSelector({
 }: RowsPerPageSelectorProps) {
   return (
     <div className="flex items-center space-x-2">
-      <p className="text-sm font-medium">Rows</p>
+      <p id="rows-per-page" className="text-sm font-medium">
+        Rows
+      </p>
       <Select value={`${value}`} onValueChange={onChange}>
-        <SelectTrigger className="h-8 w-[70px]">
+        <SelectTrigger className="h-8 w-[70px]" aria-labelledby="rows-per-page">
           <SelectValue placeholder={value} />
         </SelectTrigger>
         <SelectContent side="top">

@@ -67,7 +67,7 @@ export const columns = [
         {row.original.imageUrl ? (
           <Image
             src={row.original.imageUrl}
-            alt={`${row.original.name} logo`}
+            alt=""
             width={48}
             height={48}
             className="w-6 h-6"

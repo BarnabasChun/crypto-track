@@ -1,2 +1,7 @@
-export const DEFAULT_PER_PAGE_OPTION = 100;
-export const PER_PAGE_OPTIONS = [25, 50, DEFAULT_PER_PAGE_OPTION, 250];
+export const DEFAULT_PER_PAGE_OPTION = 25;
+export const PER_PAGE_OPTIONS = [
+  DEFAULT_PER_PAGE_OPTION,
+  50,
+  100,
+  250,
+] as const;
