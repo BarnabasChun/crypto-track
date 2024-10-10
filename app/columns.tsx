@@ -2,34 +2,13 @@
 
 import { Button } from '@/components/ui/button';
 import { CoinWithMarketData } from '@/lib/services/coingecko/schemas';
-import { createColumnHelper, Row } from '@tanstack/react-table';
+import { createColumnHelper } from '@tanstack/react-table';
 import { Star } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import PriceChangePercentageCell from './price-change-percentage-cell';
 import { DataTableColumnHeader } from './data-table-column-header';
-import { isNull, isUndefined } from '@/lib/type-predicates';
-
-const sortRawMarketData = (
-  rowA: Row<CoinWithMarketData>,
-  rowB: Row<CoinWithMarketData>,
-  columnId: keyof CoinWithMarketData['raw']
-) => {
-  const a = rowA.original.raw[columnId];
-  const b = rowB.original.raw[columnId];
-
-  if (a === b) return 0;
-
-  if (isNull(a) || isUndefined(a)) {
-    return 1;
-  }
-
-  if (isNull(b) || isUndefined(b)) {
-    return -1;
-  }
-
-  return a - b;
-};
+import { sortRawMarketData } from './column-sorting';
 
 const columnHelper = createColumnHelper<CoinWithMarketData>();
 export const columns = [
