@@ -3,6 +3,7 @@
 import { Table } from '@tanstack/react-table';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
+import { useMediaQuery } from 'usehooks-ts';
 import { Pagination, PaginationContent } from '@/components/ui/pagination';
 import usePagination from '@/lib/hooks/usePagination/usePagination';
 import RowsPerPageSelector from './rows-per-page-selector';
@@ -25,6 +26,7 @@ export function DataTableFooter<TData>({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const isSmallDevice = useMediaQuery('only screen and (max-width : 768px)');
 
   const createQueryString = (
     name: 'page' | 'per_page',
@@ -53,7 +55,7 @@ export function DataTableFooter<TData>({
   const { items: paginationItems } = usePagination({
     currentPage,
     totalPageCount,
-    // TODO: check for screen width to apply siblingCount: 0 to reduce pagination items on smaller devices
+    siblingCount: isSmallDevice ? 0 : 1,
   });
 
   return (
