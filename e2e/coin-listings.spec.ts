@@ -124,17 +124,37 @@ test.describe('Sorting', () => {
   });
 
   test('should reset on page navigation', async ({ page }) => {
-    const rankHeader = page.getByText('#');
-    await rankHeader.click();
-
     const rankElements = getRankElements(page);
+    const rankHeader = page.getByText('#');
 
+    // reverse sort
+    await rankHeader.click();
     await verifyResultsOrder(rankElements, '25', '1');
 
+    // next page
     await page.getByRole('link', { name: 'Go to next page' }).click();
-
     await page.waitForURL('/?page=2');
+    await verifyResultsOrder(rankElements, '26', '50');
 
+    // reverse sort on next page
+    await rankHeader.click();
+    await verifyResultsOrder(rankElements, '50', '26');
+
+    // page 3
+    await page
+      .getByRole('navigation', { name: 'pagination' })
+      .getByRole('link', { name: '3' })
+      .click();
+    await page.waitForURL('/?page=3');
+    await verifyResultsOrder(rankElements, '51', '75');
+
+    // reverse sort on page 3
+    await rankHeader.click();
+    await verifyResultsOrder(rankElements, '75', '51');
+
+    // previous page
+    await page.getByRole('link', { name: 'Go to previous page' }).click();
+    await page.waitForURL('/?page=2');
     await verifyResultsOrder(rankElements, '26', '50');
   });
 });
@@ -156,8 +176,8 @@ async function verifyResultsOrder(
   firstResult: string,
   lastResult: string
 ) {
-  expect(rankElements.first()).toHaveText(firstResult);
-  expect(rankElements.last()).toHaveText(lastResult);
+  expect(await rankElements.first().textContent()).toBe(firstResult);
+  expect(await rankElements.last().textContent()).toBe(lastResult);
 }
 
 async function verifyResultsRange(
