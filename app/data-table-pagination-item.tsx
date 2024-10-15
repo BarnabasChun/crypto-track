@@ -55,7 +55,7 @@ export default function DataTablePaginationItem({
         <Button
           variant="ghost"
           className="h-8 w-8 p-0"
-          disabled={item.disabled}
+          aria-disabled={item.disabled}
           onClick={resetSorting}
           asChild
         >
@@ -76,7 +76,7 @@ export default function DataTablePaginationItem({
       <PaginationItem>
         <Button
           variant="ghost"
-          disabled={currentPage === item.pageNumber}
+          aria-disabled={currentPage === item.pageNumber}
           onClick={resetSorting}
           asChild
         >

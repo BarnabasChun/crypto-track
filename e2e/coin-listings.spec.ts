@@ -64,7 +64,45 @@ test.describe('Pagination', () => {
       firstResult: '51',
       lastResult: '75',
     });
+
     await expect(page.locator('a[aria-current="page"]')).toHaveText('3');
+  });
+
+  test('should disable the previous page link if the user is on the first page', async ({
+    page,
+  }) => {
+    await expect(
+      page.getByRole('link', {
+        name: 'Go to previous page',
+        disabled: true,
+      })
+    ).toHaveCSS('pointer-events', 'none');
+  });
+
+  test('should disable the current page link if the user is on the first page', async ({
+    page,
+  }) => {
+    const currentPageLink = page.locator('a[aria-current="page"]');
+    await expect(currentPageLink).toBeDisabled();
+    await expect(currentPageLink).toHaveCSS('pointer-events', 'none');
+  });
+
+  test('should disable the next page link if the user is on the last page', async ({
+    page,
+  }) => {
+    const paginationLinks = page
+      .getByRole('navigation', { name: 'pagination' })
+      .getByRole('link');
+
+    const lastPageIndex = (await paginationLinks.count()) - 1 - 1;
+
+    const lastPageLink = paginationLinks.nth(lastPageIndex);
+
+    await lastPageLink.click();
+
+    await expect(
+      page.getByRole('link', { name: 'Go to next page', disabled: true })
+    ).toHaveCSS('pointer-events', 'none');
   });
 });
 

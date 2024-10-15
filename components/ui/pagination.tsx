@@ -51,6 +51,7 @@ const PaginationLink = ({
   ...props
 }: PaginationLinkProps) => (
   <Link
+    tabIndex={props['aria-disabled'] ? -1 : undefined}
     aria-current={isActive ? 'page' : undefined}
     className={cn(
       buttonVariants({
