@@ -57,6 +57,7 @@ export default function DataTablePaginationItem({
           className="h-8 w-8 p-0"
           disabled={item.disabled}
           onClick={resetSorting}
+          asChild
         >
           {item.type === previous ? (
             <PaginationPrevious
@@ -77,6 +78,7 @@ export default function DataTablePaginationItem({
           variant="ghost"
           disabled={currentPage === item.pageNumber}
           onClick={resetSorting}
+          asChild
         >
           <PaginationLink
             isActive={item.isActive}
