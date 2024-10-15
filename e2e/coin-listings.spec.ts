@@ -1,4 +1,5 @@
 import { DEFAULT_PER_PAGE_OPTION, PER_PAGE_OPTIONS } from '@/lib/constants';
+import AxeBuilder from '@axe-core/playwright';
 import { test, expect, Page, Locator } from '@playwright/test';
 
 test.beforeEach(async ({ page }) => {
@@ -202,6 +203,16 @@ test.describe('Sorting', () => {
     await page.waitForURL('/?page=2');
     await verifyResultsOrder(rankElements, '26', '50');
   });
+});
+
+test('should not have any automatically detectable WCAG A or AA violations', async ({
+  page,
+}) => {
+  const accessibilityScanResults = await new AxeBuilder({ page })
+    .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+    .analyze();
+
+  expect(accessibilityScanResults.violations).toEqual([]);
 });
 
 async function changeRowsPerPage(

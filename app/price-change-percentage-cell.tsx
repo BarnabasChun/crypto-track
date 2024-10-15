@@ -26,13 +26,13 @@ export default function PriceChangePercentageCell({
 
       if (priceChangePercentageAmount > 0) {
         return {
-          className: 'text-green-600',
+          className: 'text-green-700 dark:text-green-500',
           icon: <ChevronUp />,
         };
       }
 
       return {
-        className: 'text-red-600',
+        className: 'text-red-700 dark:text-red-500',
         icon: <ChevronDown />,
       };
     };

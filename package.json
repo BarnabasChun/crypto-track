@@ -13,6 +13,7 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
+    "@axe-core/playwright": "^4.10.0",
     "@coingecko/cryptoformat": "^0.8.2",
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-select": "^2.1.2",
