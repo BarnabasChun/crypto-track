@@ -7,6 +7,7 @@ import { columns } from './columns';
 import { DataTable } from './data-table';
 import { PageProps } from '@/lib/types';
 import { getCoinsWithMarketDataParams } from '@/lib/services/coingecko/schemas';
+import NotFound from '@/components/not-found';
 
 export default async function Home({ searchParams }: PageProps) {
   const params = getCoinsWithMarketDataParams.parse({
@@ -15,6 +16,10 @@ export default async function Home({ searchParams }: PageProps) {
   });
   const coins = await getCoinsMarketData(params);
   const coinsListCount = await getCoinsListCount();
+
+  if (!coins.length) {
+    return <NotFound />;
+  }
 
   return (
     <div className="container mx-auto py-10">

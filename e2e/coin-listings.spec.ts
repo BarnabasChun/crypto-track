@@ -16,6 +16,13 @@ test.describe('Initial page load', () => {
     });
     await expect(page.locator('a[aria-current="page"]')).toHaveText('1');
   });
+
+  test('should handle if there are no results', async ({ page }) => {
+    await page.goto('/?page=100000000000000000');
+
+    const notFoundPage = page.getByTestId('not-found-page');
+    await notFoundPage.waitFor();
+  });
 });
 
 test.describe('Pagination', () => {
