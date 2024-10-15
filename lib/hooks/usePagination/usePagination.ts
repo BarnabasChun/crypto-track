@@ -1,8 +1,8 @@
-type UsePaginationProps = {
+interface UsePaginationProps {
   totalPageCount?: number;
   currentPage?: number;
   siblingCount?: number;
-};
+}
 
 export const PAGINATION_ITEM_TYPES = {
   previous: 'previous',
@@ -15,17 +15,17 @@ export const PAGINATION_ITEM_TYPES = {
 type UsePaginationItemType =
   (typeof PAGINATION_ITEM_TYPES)[keyof typeof PAGINATION_ITEM_TYPES];
 
-export type UsePaginationItem = {
+export interface UsePaginationItem {
   isActive: boolean;
   pageNumber: number | null;
   type: UsePaginationItemType;
   disabled: boolean;
   id: number | string;
-};
+}
 
-type UsePaginationResult = {
+interface UsePaginationResult {
   items: UsePaginationItem[];
-};
+}
 
 export default function usePagination(
   props: UsePaginationProps = {}

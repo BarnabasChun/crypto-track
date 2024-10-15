@@ -1,15 +1,15 @@
 import { PriceChangePercentage } from '@/lib/services/coingecko/schemas';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
-type PriceChangePercentageDisplayDetails = {
+interface PriceChangePercentageDisplayDetails {
   className: string;
   icon: React.ReactNode;
-};
+}
 
-type PriceChangeCellProps = {
+interface PriceChangeCellProps {
   priceChangePercentageAmount: PriceChangePercentage;
   priceChangePercentageDisplay: string;
-};
+}
 
 export default function PriceChangePercentageCell({
   priceChangePercentageAmount,

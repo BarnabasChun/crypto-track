@@ -12,13 +12,13 @@ import {
 import { Button } from '@/components/ui/button';
 import { DEFAULT_PER_PAGE_OPTION } from '@/lib/constants';
 
-export type DataTablePaginationItem = {
+export interface DataTablePaginationItem {
   item: UsePaginationItem;
   currentPage: number;
   rowsPerPage: number;
   createPageQueryString(pageNumber: number | null): string;
   resetSorting(): void;
-};
+}
 
 export default function DataTablePaginationItem({
   item,
