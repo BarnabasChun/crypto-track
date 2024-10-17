@@ -1,10 +1,6 @@
 import { env } from '@/lib/env';
-import {
-  coinsList,
-  coinsWithMarketData,
-  CoinWithMarketData,
-  GetCoinsWithMarketDataParams,
-} from './schemas';
+import { coinsList } from './schemas';
+import { ResponseStatus } from '@/lib/types';
 
 const BASE_URL = 'https://api.coingecko.com/api/v3';
 
@@ -20,29 +16,16 @@ async function request(endpoint: string, options?: RequestInit) {
     headers,
   });
 
-  return res.json();
+  const data = await res.json();
+
+  return {
+    ...data,
+    response_status: data.error ? ResponseStatus.error : ResponseStatus.success,
+  };
 }
 
-async function getAllCoins() {
+export async function getAllCoins() {
   const response = await request('/coins/list');
 
   return coinsList.parse(response);
-}
-
-export async function getCoinsListCount() {
-  const allCoins = await getAllCoins();
-
-  return allCoins.length;
-}
-
-export async function getCoinsMarketData({
-  currency,
-  page,
-  perPage,
-}: GetCoinsWithMarketDataParams): Promise<CoinWithMarketData[]> {
-  const response = await request(
-    `/coins/markets?vs_currency=${currency}&page=${page}&per_page=${perPage}&price_change_percentage=1h,24h,7d`
-  );
-
-  return coinsWithMarketData.parse(response);
 }
