@@ -1,5 +1,5 @@
 import {
-  getCoinsListCount,
+  getAllCoins,
   getCoinsMarketData,
 } from '@/lib/services/coingecko/requests';
 
@@ -8,6 +8,7 @@ import { DataTable } from './data-table';
 import { PageProps } from '@/lib/types';
 import { getCoinsWithMarketDataParams } from '@/lib/services/coingecko/schemas';
 import NotFound from '@/components/not-found';
+import { TableCell, TableRow } from '@/components/ui/table';
 
 export default async function Home({ searchParams }: PageProps) {
   const params = getCoinsWithMarketDataParams.parse({
@@ -15,9 +16,18 @@ export default async function Home({ searchParams }: PageProps) {
     perPage: searchParams.per_page,
   });
   const coins = await getCoinsMarketData(params);
-  const coinsListCount = await getCoinsListCount();
+  const allCoins = await getAllCoins();
 
-  if (!coins.length) {
+  if (coins.status === 'error' && allCoins.status === 'error') {
+    // TODO: Better error page
+    return (
+      <div>
+        <h1>Oops something went wrong!</h1>
+      </div>
+    );
+  }
+
+  if (coins.status === 'success' && !coins.data.length) {
     return <NotFound />;
   }
 
@@ -30,10 +40,23 @@ export default async function Home({ searchParams }: PageProps) {
       <DataTable
         // @ts-expect-error https://github.com/TanStack/table/issues/4302#issuecomment-1883209783
         columns={columns}
-        data={coins}
-        rowCount={coinsListCount}
+        data={coins.status === 'success' ? coins.data : []}
+        rowCount={
+          allCoins.status === 'error' && coins.status === 'success'
+            ? coins.data.length
+            : allCoins.data.length
+        }
         rowsPerPage={params.perPage}
         currentPage={params.page}
+        tableBody={
+          coins.status === 'success' ? null : (
+            <TableRow>
+              <TableCell colSpan={9} className="h-24 text-center">
+                Failed to load coin listings. Please try again later.
+              </TableCell>
+            </TableRow>
+          )
+        }
       />
     </div>
   );

@@ -4,10 +4,40 @@ import { formatCurrency } from '@coingecko/cryptoformat';
 import { transformToSingleDigitPercent } from '@/lib/formatting';
 import { DEFAULT_PER_PAGE_OPTION } from '@/lib/constants';
 
+export function parseCoingeckoResponse<T extends z.ZodTypeAny>(
+  data: unknown,
+  schema: T
+) {
+  const coingeckoErrorResponse = z.object({ error: z.string() });
+  const coingeckoResponse = z.union([z.any(), coingeckoErrorResponse]);
+
+  const parsedResponse = coingeckoResponse.parse(data);
+
+  const isErrorResponse = 'error' in parsedResponse;
+
+  const response = {
+    data: isErrorResponse ? parsedResponse.error : parsedResponse,
+    status: isErrorResponse ? 'error' : 'success',
+  };
+
+  const errorResponse = z.object({
+    data: z.string(),
+    status: z.literal('error'),
+  });
+
+  const successResponseSchema = z.object({
+    data: schema,
+    status: z.literal('success'),
+  });
+
+  return z
+    .discriminatedUnion('status', [errorResponse, successResponseSchema])
+    .parse(response);
+}
+
 export const coinsList = z.array(z.object({}));
 
 const priceChangePercentage = z.number().nullish();
-
 export type PriceChangePercentage = z.infer<typeof priceChangePercentage>;
 
 const handlePriceChangeDisplay = (priceChange: PriceChangePercentage) =>
@@ -76,9 +106,7 @@ export const coinWithMarketData = z
       };
     }
   );
-
 export type CoinWithMarketData = z.infer<typeof coinWithMarketData>;
-
 export const coinsWithMarketData = z.array(coinWithMarketData);
 
 export const getCoinsWithMarketDataParams = z.object({
@@ -95,7 +123,6 @@ export const getCoinsWithMarketDataParams = z.object({
     .nullish()
     .transform((val) => (val ? parseInt(val) : DEFAULT_PER_PAGE_OPTION)),
 });
-
 export type GetCoinsWithMarketDataParams = z.output<
   typeof getCoinsWithMarketDataParams
 >;
