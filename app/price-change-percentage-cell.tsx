@@ -1,3 +1,4 @@
+import { PriceChangePercentage } from '@/lib/services/coingecko/schemas';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
 interface PriceChangePercentageDisplayDetails {
@@ -6,7 +7,7 @@ interface PriceChangePercentageDisplayDetails {
 }
 
 interface PriceChangeCellProps {
-  priceChangePercentageAmount: number;
+  priceChangePercentageAmount: PriceChangePercentage;
   priceChangePercentageDisplay: string;
 }
 
@@ -16,6 +17,13 @@ export default function PriceChangePercentageCell({
 }: PriceChangeCellProps) {
   const getPriceChangePercentageDisplayDetails =
     (): PriceChangePercentageDisplayDetails => {
+      if (!priceChangePercentageAmount) {
+        return {
+          className: '',
+          icon: null,
+        };
+      }
+
       if (priceChangePercentageAmount > 0) {
         return {
           className: 'text-green-700 dark:text-green-500',
@@ -34,7 +42,7 @@ export default function PriceChangePercentageCell({
   return (
     <div className={`flex justify-end ${className}`}>
       {icon && icon}
-      {priceChangePercentageDisplay}
+      {priceChangePercentageDisplay ?? '-'}
     </div>
   );
 }
