@@ -1,23 +1,34 @@
+import {
+  getAllCoins,
+  getCoinsMarketData,
+} from '@/lib/services/coingecko/requests';
+
 import { columns } from './columns';
 import { DataTable } from './data-table';
 import { PageProps } from '@/lib/types';
-import { getCoinsListingParams } from '@/lib/services/cmc/schemas';
+import { getCoinsWithMarketDataParams } from '@/lib/services/coingecko/schemas';
 import NotFound from '@/components/not-found';
-import { getCoinsListing } from '@/lib/services/cmc/requests';
+import { TableCell, TableRow } from '@/components/ui/table';
 
 export default async function Home(props: PageProps) {
   const searchParams = await props.searchParams;
-  const params = getCoinsListingParams.parse({
+  const params = getCoinsWithMarketDataParams.parse({
     page: searchParams.page,
     perPage: searchParams.per_page,
   });
-  const { data, status } = await getCoinsListing(params);
+  const coins = await getCoinsMarketData(params);
+  const allCoins = await getAllCoins();
 
-  if (!data) {
-    return <div>Oops! something went wrong</div>;
+  if (coins.status === 'error' && allCoins.status === 'error') {
+    // TODO: Better error page
+    return (
+      <div>
+        <h1>Oops something went wrong!</h1>
+      </div>
+    );
   }
 
-  if (!data.length) {
+  if (coins.status === 'success' && !coins.data.length) {
     return <NotFound />;
   }
 
@@ -30,10 +41,23 @@ export default async function Home(props: PageProps) {
       <DataTable
         // @ts-expect-error https://github.com/TanStack/table/issues/4302#issuecomment-1883209783
         columns={columns}
-        data={data}
-        rowCount={status.total_count}
+        data={coins.status === 'success' ? coins.data : []}
+        rowCount={
+          allCoins.status === 'error' && coins.status === 'success'
+            ? coins.data.length
+            : allCoins.data.length
+        }
         rowsPerPage={params.perPage}
         currentPage={params.page}
+        tableBody={
+          coins.status === 'success' ? null : (
+            <TableRow>
+              <TableCell colSpan={9} className="h-24 text-center">
+                Failed to load coin listings. Please try again later.
+              </TableCell>
+            </TableRow>
+          )
+        }
       />
     </div>
   );

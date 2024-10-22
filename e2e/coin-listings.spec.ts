@@ -19,7 +19,7 @@ test.describe('Initial page load', () => {
   });
 
   test('should handle if there are no results', async ({ page }) => {
-    await page.goto('/?page=1000000');
+    await page.goto('/?page=100000000000000000');
 
     const notFoundPage = page.getByTestId('not-found-page');
     await notFoundPage.waitFor();
@@ -56,7 +56,7 @@ test.describe('Pagination', () => {
   }) => {
     await page
       .getByRole('navigation', { name: 'pagination' })
-      .getByRole('link', { name: /^3$/ })
+      .getByRole('link', { name: '3' })
       .click();
 
     await page.waitForURL('/?page=3');
@@ -111,13 +111,13 @@ test.describe('Row count selection', () => {
   test('changes the number of coins displayed on the page', async ({
     page,
   }) => {
-    await changeRowsPerPage(page, 50);
+    await changeRowsPerPage(page, 100);
 
-    await page.waitForURL('/?per_page=50');
+    await page.waitForURL('/?per_page=100');
     await verifyExpectedResults(page, {
-      perPage: 50,
+      perPage: 100,
       firstResult: '1',
-      lastResult: '50',
+      lastResult: '100',
     });
   });
 
@@ -189,7 +189,7 @@ test.describe('Sorting', () => {
     // page 3
     await page
       .getByRole('navigation', { name: 'pagination' })
-      .getByRole('link', { name: /^3$/ })
+      .getByRole('link', { name: '3' })
       .click();
     await page.waitForURL('/?page=3');
     await verifyResultsOrder(rankElements, '51', '75');
