@@ -5,7 +5,8 @@ import { getCoinsListingParams } from '@/lib/services/cmc/schemas';
 import NotFound from '@/components/not-found';
 import { getCoinsListing } from '@/lib/services/cmc/requests';
 
-export default async function Home({ searchParams }: PageProps) {
+export default async function Home(props: PageProps) {
+  const searchParams = await props.searchParams;
   const params = getCoinsListingParams.parse({
     page: searchParams.page,
     perPage: searchParams.per_page,
