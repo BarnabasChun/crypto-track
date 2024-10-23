@@ -1,14 +1,14 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { CoinWithMarketData } from '@/lib/services/coingecko/schemas';
+import { CoinWithMarketData } from '@/features/coins/api/schemas';
 import { createColumnHelper } from '@tanstack/react-table';
 import { Star } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import PriceChangePercentageCell from './price-change-percentage-cell';
-import { DataTableColumnHeader } from './data-table-column-header';
-import { sortRawMarketData } from './column-sorting';
+import PriceChangePercentageCell from '@/features/coins/components/data-table/price-change-percentage-cell';
+import { DataTableColumnHeader } from '@/features/coins/components/data-table/data-table-column-header';
+import { sortRawMarketData } from '@/features/coins/utils/column-sorting';
 
 const columnHelper = createColumnHelper<CoinWithMarketData>();
 export const columns = [

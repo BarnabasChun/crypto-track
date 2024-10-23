@@ -4,7 +4,7 @@ import {
   coinsWithMarketData,
   GetCoinsWithMarketDataParams,
   parseCoingeckoResponse,
-} from './schemas';
+} from '@/features/coins/api/schemas';
 
 const BASE_URL = 'https://api.coingecko.com/api/v3';
 

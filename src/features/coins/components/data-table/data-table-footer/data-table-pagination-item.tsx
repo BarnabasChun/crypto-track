@@ -10,7 +10,7 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination';
 import { Button } from '@/components/ui/button';
-import { DEFAULT_PER_PAGE_OPTION } from '@/lib/constants';
+import { DEFAULT_PER_PAGE_OPTION } from '@/features/coins/constants';
 
 export interface DataTablePaginationItem {
   item: UsePaginationItem;

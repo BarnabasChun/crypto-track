@@ -1,4 +1,4 @@
-import { PriceChangePercentage } from '@/lib/services/coingecko/schemas';
+import { PriceChangePercentage } from '@/features/coins/api/schemas';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
 interface PriceChangePercentageDisplayDetails {

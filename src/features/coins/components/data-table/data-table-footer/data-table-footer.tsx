@@ -6,9 +6,9 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useMediaQuery } from 'usehooks-ts';
 import { Pagination, PaginationContent } from '@/components/ui/pagination';
 import usePagination from '@/hooks/usePagination/usePagination';
-import RowsPerPageSelector from './rows-per-page-selector';
-import DataTablePaginationItem from './data-table-pagination-item';
-import { DEFAULT_PER_PAGE_OPTION } from '@/lib/constants';
+import RowsPerPageSelector from '@/features/coins/components/data-table/data-table-footer/rows-per-page-selector';
+import DataTablePaginationItem from '@/features/coins/components/data-table/data-table-footer/data-table-pagination-item';
+import { DEFAULT_PER_PAGE_OPTION } from '@/features/coins/constants';
 
 interface DataTableFooterProps<TData> {
   table: Table<TData>;

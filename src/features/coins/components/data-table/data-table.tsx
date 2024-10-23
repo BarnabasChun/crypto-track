@@ -25,7 +25,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { DataTableFooter } from './data-table-footer';
+import { DataTableFooter } from './data-table-footer/data-table-footer';
 import { useState } from 'react';
 
 interface DataTableProps<TData, TValue> {

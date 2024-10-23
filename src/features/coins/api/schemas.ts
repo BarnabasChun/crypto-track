@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { formatCurrency } from '@coingecko/cryptoformat';
 
 import { transformToSingleDigitPercent } from '@/utils/formatting';
-import { DEFAULT_PER_PAGE_OPTION } from '@/lib/constants';
+import { DEFAULT_PER_PAGE_OPTION } from '@/features/coins/constants';
 
 export function parseCoingeckoResponse<T extends z.ZodTypeAny>(
   data: unknown,
