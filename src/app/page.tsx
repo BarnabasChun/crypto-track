@@ -38,8 +38,8 @@ export default async function Home(props: PageProps) {
   };
 
   return (
-    <div className="container mx-auto py-10">
-      <h1 className="text-2xl font-bold mb-4">
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-2">
         Cryptocurrency Prices by Market Cap
       </h1>
 
