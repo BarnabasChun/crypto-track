@@ -40,7 +40,7 @@ export const columns = [
     ),
     cell: ({ row }) => (
       <Link
-        href={`/coins/${row.original.id}`}
+        href={`/coins/${row.original.slug}`}
         className="flex items-center gap-2 font-semibold"
       >
         {row.original.imageUrl ? (

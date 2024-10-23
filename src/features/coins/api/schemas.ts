@@ -4,6 +4,7 @@ import { DEFAULT_PER_PAGE_OPTION } from '@/features/coins/constants';
 import {
   handleCurrencyAmountDisplay,
   handlePriceChangeDisplay,
+  nameToSlug,
 } from '@/features/coins/utils/formatting';
 
 export function parseCoingeckoResponse<T extends z.ZodTypeAny>(
@@ -39,7 +40,15 @@ export function parseCoingeckoResponse<T extends z.ZodTypeAny>(
     .parse(response);
 }
 
-export const coinsList = z.array(z.object({}));
+export const coinsList = z.array(
+  z
+    .object({
+      id: z.string(),
+      name: z.string(),
+      symbol: z.string(),
+    })
+    .transform((props) => ({ ...props, slug: nameToSlug(props.name) }))
+);
 
 export const priceChangePercentage = z.number().nullish();
 
@@ -100,6 +109,7 @@ export const coinWithMarketData = z
         },
         imageUrl: image === 'missing_large.png' ? '' : image,
         ...data,
+        slug: nameToSlug(data.name),
       };
     }
   );
