@@ -1,4 +1,4 @@
-import { env } from '@/lib/env';
+import { env } from '@/config/env';
 import {
   coinsList,
   coinsWithMarketData,
