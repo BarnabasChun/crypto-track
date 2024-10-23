@@ -4,7 +4,7 @@ import { columns } from '@/features/coins/lib/columns';
 import { DataTable } from '@/features/coins/components/data-table/data-table';
 import { PageProps } from '@/types';
 import { getCoinsWithMarketDataParams } from '@/features/coins/api/schemas';
-import NotFound from '@/components/not-found';
+import NotFound from '@/app/not-found';
 import { TableCell, TableRow } from '@/components/ui/table';
 
 export default async function Home(props: PageProps) {
