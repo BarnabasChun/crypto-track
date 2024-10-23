@@ -1,6 +1,9 @@
 import { z } from 'zod';
 
-import { DEFAULT_PER_PAGE_OPTION } from '@/features/coins/constants';
+import {
+  DEFAULT_CURRENCY,
+  DEFAULT_PER_PAGE_OPTION,
+} from '@/features/coins/constants';
 import {
   handleCurrencyAmountDisplay,
   handlePriceChangeDisplay,
@@ -120,7 +123,7 @@ export const getCoinsWithMarketDataParams = z.object({
   currency: z
     .string()
     .nullish()
-    .transform((val) => val ?? 'usd'),
+    .transform((val) => val ?? DEFAULT_CURRENCY),
   page: z
     .string()
     .nullish()
@@ -130,3 +133,49 @@ export const getCoinsWithMarketDataParams = z.object({
     .nullish()
     .transform((val) => (val ? parseInt(val) : DEFAULT_PER_PAGE_OPTION)),
 });
+
+const marketDataCurrencyMap = z.record(z.string(), z.number());
+
+export const coinDetails = z
+  .object({
+    id: z.string(),
+    name: z.string(),
+    symbol: z.string(),
+    market_data: z.object({
+      current_price: marketDataCurrencyMap,
+      price_change_percentage_24h_in_currency: marketDataCurrencyMap,
+    }),
+    image: z.object({
+      thumb: z.string(),
+      small: z.string(),
+      large: z.string(),
+    }),
+    market_cap_rank: z.number(),
+  })
+  .transform(({ image, symbol, market_cap_rank, market_data, ...props }) => {
+    return {
+      ...props,
+      symbol: symbol.toUpperCase(),
+      imageUrl: image.thumb,
+      rank: market_cap_rank,
+      marketData: {
+        raw: {
+          currentPrice: market_data.current_price[DEFAULT_CURRENCY],
+          priceChange24h:
+            market_data.price_change_percentage_24h_in_currency[
+              DEFAULT_CURRENCY
+            ],
+        },
+        display: {
+          currentPrice: handleCurrencyAmountDisplay(
+            market_data.current_price[DEFAULT_CURRENCY]
+          ),
+          priceChange24h: handlePriceChangeDisplay(
+            market_data.price_change_percentage_24h_in_currency[
+              DEFAULT_CURRENCY
+            ]
+          ),
+        },
+      },
+    };
+  });

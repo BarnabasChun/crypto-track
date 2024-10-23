@@ -5,3 +5,4 @@ export const PER_PAGE_OPTIONS = [
   100,
   250,
 ] as const;
+export const DEFAULT_CURRENCY = 'usd';

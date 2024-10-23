@@ -1,5 +1,6 @@
 import { env } from '@/config/env';
 import {
+  coinDetails,
   coinsList,
   coinsWithMarketData,
   getCoinsWithMarketDataParams,
@@ -47,5 +48,5 @@ export async function getCoinsMarketData({
 export async function getCoin(id: string) {
   const response = await request(`/coins/${id}`);
 
-  return response;
+  return parseCoingeckoResponse(response, coinDetails);
 }
