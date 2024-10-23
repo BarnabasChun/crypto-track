@@ -32,6 +32,14 @@ export default async function Home(props: PageProps) {
     return <NotFound />;
   }
 
+  const getRowCount = () => {
+    if (allCoins.status === 'error') {
+      return coins.status === 'success' ? coins.data.length : 0;
+    }
+
+    return allCoins.data.length;
+  };
+
   return (
     <div className="container mx-auto py-10">
       <h1 className="text-2xl font-bold mb-4">
@@ -42,11 +50,7 @@ export default async function Home(props: PageProps) {
         // @ts-expect-error https://github.com/TanStack/table/issues/4302#issuecomment-1883209783
         columns={columns}
         data={coins.status === 'success' ? coins.data : []}
-        rowCount={
-          allCoins.status === 'error' && coins.status === 'success'
-            ? coins.data.length
-            : allCoins.data.length
-        }
+        rowCount={getRowCount()}
         rowsPerPage={params.perPage}
         currentPage={params.page}
         tableBody={

@@ -16,12 +16,14 @@ export function parseCoingeckoResponse<T extends z.ZodTypeAny>(
   const isErrorResponse = 'error' in parsedResponse;
 
   const response = {
-    data: isErrorResponse ? parsedResponse.error : parsedResponse,
+    ...(isErrorResponse
+      ? { error: parsedResponse.error }
+      : { data: parsedResponse }),
     status: isErrorResponse ? 'error' : 'success',
   };
 
   const errorResponse = z.object({
-    data: z.string(),
+    error: z.string(),
     status: z.literal('error'),
   });
 
