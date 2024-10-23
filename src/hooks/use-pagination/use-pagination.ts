@@ -27,7 +27,7 @@ interface UsePaginationResult {
   items: UsePaginationItem[];
 }
 
-export default function usePagination(
+export function usePagination(
   props: UsePaginationProps = {}
 ): UsePaginationResult {
   const { totalPageCount = 1, currentPage = 1, siblingCount = 1 } = props;

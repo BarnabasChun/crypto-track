@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react';
 
-import usePagination, { PAGINATION_ITEM_TYPES } from './usePagination';
+import usePagination, { PAGINATION_ITEM_TYPES } from './use-pagination';
 
 const { next, previous, leftEllipsis, rightEllipsis } = PAGINATION_ITEM_TYPES;
 
