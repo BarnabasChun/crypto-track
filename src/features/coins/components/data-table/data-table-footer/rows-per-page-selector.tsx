@@ -12,7 +12,7 @@ interface RowsPerPageSelectorProps {
   onChange: (value: string) => void;
 }
 
-export default function RowsPerPageSelector({
+export function RowsPerPageSelector({
   value,
   onChange,
 }: RowsPerPageSelectorProps) {

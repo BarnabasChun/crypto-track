@@ -6,7 +6,7 @@ import { createColumnHelper } from '@tanstack/react-table';
 import { Star } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import PriceChangePercentageCell from '@/features/coins/components/data-table/price-change-percentage-cell';
+import { PriceChangePercentageCell } from '@/features/coins/components/data-table/price-change-percentage-cell';
 import { DataTableColumnHeader } from '@/features/coins/components/data-table/data-table-column-header';
 import { sortRawMarketData } from '@/features/coins/utils/column-sorting';
 

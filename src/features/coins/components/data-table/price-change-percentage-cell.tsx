@@ -11,7 +11,7 @@ interface PriceChangeCellProps {
   priceChangePercentageDisplay: string;
 }
 
-export default function PriceChangePercentageCell({
+export function PriceChangePercentageCell({
   priceChangePercentageAmount,
   priceChangePercentageDisplay,
 }: PriceChangeCellProps) {

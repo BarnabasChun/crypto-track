@@ -20,7 +20,7 @@ export interface DataTablePaginationItem {
   resetSorting(): void;
 }
 
-export default function DataTablePaginationItem({
+export function DataTablePaginationItem({
   item,
   currentPage,
   createPageQueryString,
