@@ -2,9 +2,10 @@ import { env } from '@/config/env';
 import {
   coinsList,
   coinsWithMarketData,
-  GetCoinsWithMarketDataParams,
+  getCoinsWithMarketDataParams,
   parseCoingeckoResponse,
-} from '@/features/coins/api/schemas';
+} from './schemas';
+import { z } from 'zod';
 
 const BASE_URL = 'https://api.coingecko.com/api/v3';
 
@@ -35,10 +36,16 @@ export async function getCoinsMarketData({
   currency,
   page,
   perPage,
-}: GetCoinsWithMarketDataParams) {
+}: z.output<typeof getCoinsWithMarketDataParams>) {
   const response = await request(
     `/coins/markets?vs_currency=${currency}&page=${page}&per_page=${perPage}&price_change_percentage=1h,24h,7d`
   );
 
   return parseCoingeckoResponse(response, coinsWithMarketData);
+}
+
+export async function getCoin(id: string) {
+  const response = await request(`/coins/${id}`);
+
+  return response;
 }

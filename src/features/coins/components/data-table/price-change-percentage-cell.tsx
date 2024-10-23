@@ -1,5 +1,7 @@
-import { PriceChangePercentage } from '@/features/coins/api/schemas';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import { z } from 'zod';
+
+import { priceChangePercentage } from '@/features/coins/api/schemas';
 
 interface PriceChangePercentageDisplayDetails {
   className: string;
@@ -7,7 +9,7 @@ interface PriceChangePercentageDisplayDetails {
 }
 
 interface PriceChangeCellProps {
-  priceChangePercentageAmount: PriceChangePercentage;
+  priceChangePercentageAmount: z.infer<typeof priceChangePercentage>;
   priceChangePercentageDisplay: string;
 }
 
