@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { formatCurrency } from '@coingecko/cryptoformat';
 
-import { transformToSingleDigitPercent } from '@/lib/formatting';
+import { transformToSingleDigitPercent } from '@/utils/formatting';
 import { DEFAULT_PER_PAGE_OPTION } from '@/lib/constants';
 
 export function parseCoingeckoResponse<T extends z.ZodTypeAny>(

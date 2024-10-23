@@ -1,7 +1,7 @@
 import { Row } from '@tanstack/react-table';
 
 import { CoinWithMarketData } from '@/lib/services/coingecko/schemas';
-import { isNull, isUndefined } from '@/lib/type-predicates';
+import { isNull, isUndefined } from '@/utils/type-predicates';
 
 export const sortRawMarketData = (
   rowA: Row<CoinWithMarketData>,
