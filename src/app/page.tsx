@@ -2,7 +2,7 @@ import { getAllCoins, getCoinsMarketData } from '@/features/coins/api/requests';
 
 import { columns } from '@/features/coins/lib/columns';
 import { DataTable } from '@/features/coins/components/data-table/data-table';
-import { PageProps } from '@/lib/types';
+import { PageProps } from '@/types';
 import { getCoinsWithMarketDataParams } from '@/features/coins/api/schemas';
 import NotFound from '@/components/not-found';
 import { TableCell, TableRow } from '@/components/ui/table';
