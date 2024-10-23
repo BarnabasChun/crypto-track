@@ -1,7 +1,7 @@
 import {
   PAGINATION_ITEM_TYPES,
   UsePaginationItem,
-} from '@/lib/hooks/usePagination/usePagination';
+} from '@/hooks/usePagination/usePagination';
 import {
   PaginationEllipsis,
   PaginationItem,

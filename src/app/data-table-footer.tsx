@@ -5,7 +5,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { useMediaQuery } from 'usehooks-ts';
 import { Pagination, PaginationContent } from '@/components/ui/pagination';
-import usePagination from '@/lib/hooks/usePagination/usePagination';
+import usePagination from '@/hooks/usePagination/usePagination';
 import RowsPerPageSelector from './rows-per-page-selector';
 import DataTablePaginationItem from './data-table-pagination-item';
 import { DEFAULT_PER_PAGE_OPTION } from '@/lib/constants';
