@@ -24,7 +24,9 @@ async function request(endpoint: string, options?: RequestInit) {
 }
 
 export async function getAllCoins() {
-  const response = await request('/coins/list');
+  const response = await request('/coins/list', {
+    next: { revalidate: 60 * 60 * 1 },
+  });
 
   return parseCoingeckoResponse(response, coinsList);
 }
