@@ -18,7 +18,7 @@ export default async function CoinDetailsPage(props: {
             <Image src={imageUrl} alt="" width={25} height={25} />
             <h1 className="text-2xl font-bold">{name}</h1>{' '}
             <span className="text-muted-foreground">{symbol}</span>
-            <Badge variant="secondary">#{rank}</Badge>
+            {rank && <Badge variant="secondary">#{rank}</Badge>}
           </div>
 
           <div className="flex gap-1">

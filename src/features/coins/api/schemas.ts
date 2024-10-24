@@ -140,7 +140,7 @@ export const coinDetails = z
       small: z.string(),
       large: z.string(),
     }),
-    market_cap_rank: z.number(),
+    market_cap_rank: z.number().nullable(),
   })
   .transform(({ image, symbol, market_cap_rank, market_data, ...props }) => {
     return {
