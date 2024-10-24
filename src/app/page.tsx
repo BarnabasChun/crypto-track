@@ -13,29 +13,12 @@ export default async function Home(props: PageProps) {
     page: searchParams.page,
     perPage: searchParams.per_page,
   });
-  const [coinsError, coins] = await getCoinsMarketData(params);
-  const [allCoinsError, allCoins] = await getAllCoins();
-
-  if (coinsError && allCoinsError) {
-    // TODO: Better error page
-    return (
-      <div>
-        <h1>Oops something went wrong!</h1>
-      </div>
-    );
-  }
+  const [, coins] = await getCoinsMarketData(params);
+  const [, allCoins] = await getAllCoins();
 
   if (coins && !coins.length) {
     return <NotFound />;
   }
-
-  const getRowCount = () => {
-    if (allCoinsError) {
-      return coins?.length ?? 0;
-    }
-
-    return allCoins.length;
-  };
 
   return (
     <div className="container mx-auto p-4">
@@ -44,10 +27,10 @@ export default async function Home(props: PageProps) {
       </h1>
 
       <DataTable
-        // @ts-expect-error https://github.com/TanStack/table/issues/4302#issuecomment-1883209783
+        // @ts-expect-error https://github.com/TanStack/table/issues/4302#issuecomment-1883209783   // @ts-expect-error https://github.com/TanStack/table/issues/4302#issuecomment-1883209783
         columns={columns}
         data={coins ?? []}
-        rowCount={getRowCount()}
+        rowCount={allCoins?.length ?? coins?.length ?? 0}
         rowsPerPage={params.perPage}
         currentPage={params.page}
         tableBody={
