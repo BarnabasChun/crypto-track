@@ -27,7 +27,6 @@ export default async function Home(props: PageProps) {
       </h1>
 
       <DataTable
-        // @ts-expect-error https://github.com/TanStack/table/issues/4302#issuecomment-1883209783   // @ts-expect-error https://github.com/TanStack/table/issues/4302#issuecomment-1883209783
         columns={columns}
         data={coins ?? []}
         rowCount={allCoins?.length ?? coins?.length ?? 0}
