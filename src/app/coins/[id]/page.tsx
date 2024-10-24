@@ -1,18 +1,13 @@
 import { Badge } from '@/components/ui/badge';
-import { getAllCoins, getCoin } from '@/features/coins/api/requests';
+import { getCoin } from '@/features/coins/api/requests';
 import { PriceChangePercentageCell } from '@/features/coins/components/data-table/price-change-percentage-cell';
-import { PageProps } from '@/types';
 import Image from 'next/image';
 
-export default async function CoinDetailsPage(props: PageProps) {
+export default async function CoinDetailsPage(props: {
+  params: Promise<{ id: string }>;
+}) {
   const params = await props.params;
-  const allCoins = await getAllCoins();
-
-  const coinsList = allCoins.status === 'success' ? allCoins.data : [];
-
-  const coinId = coinsList.find((coin) => coin.slug === params.slug)!.id;
-
-  const coinDetails = await getCoin(coinId);
+  const coinDetails = await getCoin(params.id);
 
   if (coinDetails.status === 'success') {
     const { name, symbol, imageUrl, rank, marketData } = coinDetails.data;
