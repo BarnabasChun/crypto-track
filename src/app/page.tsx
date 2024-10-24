@@ -13,10 +13,10 @@ export default async function Home(props: PageProps) {
     page: searchParams.page,
     perPage: searchParams.per_page,
   });
-  const coins = await getCoinsMarketData(params);
-  const allCoins = await getAllCoins();
+  const [coinsError, coins] = await getCoinsMarketData(params);
+  const [allCoinsError, allCoins] = await getAllCoins();
 
-  if (coins.status === 'error' && allCoins.status === 'error') {
+  if (coinsError && allCoinsError) {
     // TODO: Better error page
     return (
       <div>
@@ -25,16 +25,16 @@ export default async function Home(props: PageProps) {
     );
   }
 
-  if (coins.status === 'success' && !coins.data.length) {
+  if (coins && !coins.length) {
     return <NotFound />;
   }
 
   const getRowCount = () => {
-    if (allCoins.status === 'error') {
-      return coins.status === 'success' ? coins.data.length : 0;
+    if (allCoinsError) {
+      return coins?.length ?? 0;
     }
 
-    return allCoins.data.length;
+    return allCoins.length;
   };
 
   return (
@@ -46,12 +46,12 @@ export default async function Home(props: PageProps) {
       <DataTable
         // @ts-expect-error https://github.com/TanStack/table/issues/4302#issuecomment-1883209783
         columns={columns}
-        data={coins.status === 'success' ? coins.data : []}
+        data={coins ?? []}
         rowCount={getRowCount()}
         rowsPerPage={params.perPage}
         currentPage={params.page}
         tableBody={
-          coins.status === 'success' ? null : (
+          coins ? null : (
             <TableRow>
               <TableCell colSpan={9} className="h-24 text-center">
                 Failed to load coin listings. Please try again later.

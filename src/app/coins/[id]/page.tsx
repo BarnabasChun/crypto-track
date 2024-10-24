@@ -2,15 +2,16 @@ import { Badge } from '@/components/ui/badge';
 import { getCoin } from '@/features/coins/api/requests';
 import { PriceChangePercentageCell } from '@/features/coins/components/data-table/price-change-percentage-cell';
 import Image from 'next/image';
+import { notFound } from 'next/navigation';
 
 export default async function CoinDetailsPage(props: {
   params: Promise<{ id: string }>;
 }) {
   const params = await props.params;
-  const coinDetails = await getCoin(params.id);
+  const [error, coinDetails] = await getCoin(params.id);
 
-  if (coinDetails.status === 'success') {
-    const { name, symbol, imageUrl, rank, marketData } = coinDetails.data;
+  if (coinDetails) {
+    const { name, symbol, imageUrl, rank, marketData } = coinDetails;
     return (
       <div className="container mx-auto p-4">
         <section>
@@ -31,5 +32,9 @@ export default async function CoinDetailsPage(props: {
         </section>
       </div>
     );
+  }
+
+  if (error.statusCode === 404) {
+    notFound();
   }
 }

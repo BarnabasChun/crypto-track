@@ -9,39 +9,6 @@ import {
   handlePriceChangeDisplay,
 } from '@/features/coins/utils/formatting';
 
-export function parseCoingeckoResponse<T extends z.ZodTypeAny>(
-  data: unknown,
-  schema: T
-) {
-  const coingeckoErrorResponse = z.object({ error: z.string() });
-  const coingeckoResponse = z.union([z.any(), coingeckoErrorResponse]);
-
-  const parsedResponse = coingeckoResponse.parse(data);
-
-  const isErrorResponse = 'error' in parsedResponse;
-
-  const response = {
-    ...(isErrorResponse
-      ? { error: parsedResponse.error }
-      : { data: parsedResponse }),
-    status: isErrorResponse ? 'error' : 'success',
-  };
-
-  const errorResponse = z.object({
-    error: z.string(),
-    status: z.literal('error'),
-  });
-
-  const successResponseSchema = z.object({
-    data: schema,
-    status: z.literal('success'),
-  });
-
-  return z
-    .discriminatedUnion('status', [errorResponse, successResponseSchema])
-    .parse(response);
-}
-
 export const coinsList = z.array(z.object({}));
 
 export const priceChangePercentage = z.number().nullish();
