@@ -4,7 +4,7 @@ import { createColumnHelper } from '@tanstack/react-table';
 import { Star } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { CoinWithMarketData } from '@/features/coins/api/types';
+import { type CoinWithMarketData } from '@/features/coins/api/types';
 import { Button } from '@/components/ui/button';
 import { PriceChangePercentage } from '@/features/coins/components/price-change-percentage';
 import { DataTableColumnHeader } from '@/features/coins/components/data-table/data-table-column-header';

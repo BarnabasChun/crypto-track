@@ -1,5 +1,5 @@
 import { Row } from '@tanstack/react-table';
-import { CoinWithMarketData } from '@/features/coins/api/types';
+import { type CoinWithMarketData } from '@/features/coins/api/types';
 import { sortRawMarketData } from './column-sorting';
 
 const columnToSort = 'currentPrice' as const;
