@@ -17,6 +17,7 @@ declare module '@tanstack/react-table' {
   }
 }
 
+import { useState } from 'react';
 import {
   Table,
   TableBody,
@@ -26,7 +27,6 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { DataTableFooter } from './data-table-footer/data-table-footer';
-import { useState } from 'react';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

@@ -1,8 +1,8 @@
+import Image from 'next/image';
+import { notFound } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
 import { getCoin } from '@/features/coins/api/requests';
 import { PriceChangePercentageCell } from '@/features/coins/components/data-table/price-change-percentage-cell';
-import Image from 'next/image';
-import { notFound } from 'next/navigation';
 
 export default async function CoinDetailsPage(props: {
   params: Promise<{ id: string }>;

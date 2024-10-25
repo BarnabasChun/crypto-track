@@ -1,6 +1,6 @@
-import { transformToSingleDigitPercent } from '@/utils/formatting';
 import { formatCurrency } from '@coingecko/cryptoformat';
 import { z } from 'zod';
+import { transformToSingleDigitPercent } from '@/utils/formatting';
 import {
   currencyAmount,
   priceChangePercentage,

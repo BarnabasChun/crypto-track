@@ -1,3 +1,5 @@
+import { z } from 'zod';
+import { unstable_cacheLife as cacheLife } from 'next/cache';
 import { env } from '@/config/env';
 import {
   coinDetails,
@@ -5,8 +7,6 @@ import {
   coinsWithMarketData,
   getCoinsWithMarketDataParams,
 } from './schemas';
-import { z } from 'zod';
-import { unstable_cacheLife as cacheLife } from 'next/cache';
 
 const BASE_URL = 'https://api.coingecko.com/api/v3';
 
