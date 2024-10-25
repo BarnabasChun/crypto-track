@@ -9,6 +9,7 @@ import { usePagination } from '@/hooks/use-pagination/use-pagination';
 import { RowsPerPageSelector } from '@/features/coins/components/data-table/data-table-footer/rows-per-page-selector';
 import { DataTablePaginationItem } from '@/features/coins/components/data-table/data-table-footer/data-table-pagination-item';
 import { DEFAULT_PER_PAGE_OPTION } from '@/features/coins/constants';
+import { useEffect, useState } from 'react';
 
 interface DataTableFooterProps<TData> {
   table: Table<TData>;
@@ -26,7 +27,12 @@ export function DataTableFooter<TData>({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [siblingCount, setSiblingCount] = useState(1);
   const isSmallDevice = useMediaQuery('only screen and (max-width : 768px)');
+
+  useEffect(() => {
+    setSiblingCount(isSmallDevice ? 0 : 1);
+  }, [isSmallDevice]);
 
   const createQueryString = (
     name: 'page' | 'per_page',
@@ -55,7 +61,7 @@ export function DataTableFooter<TData>({
   const { items: paginationItems } = usePagination({
     currentPage,
     totalPageCount,
-    siblingCount: isSmallDevice ? 0 : 1,
+    siblingCount,
   });
 
   return (
