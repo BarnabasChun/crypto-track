@@ -1,5 +1,7 @@
-import { getAllCoins, getCoinsMarketData } from '@/features/coins/api/requests';
-
+import {
+  getCoinCount,
+  getCoinsMarketData,
+} from '@/features/coins/api/requests';
 import { columns } from '@/features/coins/lib/columns';
 import { DataTable } from '@/features/coins/components/data-table/data-table';
 import { PageProps } from '@/types';
@@ -14,7 +16,7 @@ export default async function Home(props: PageProps) {
     perPage: searchParams.per_page,
   });
   const [, coins] = await getCoinsMarketData(params);
-  const [, allCoins] = await getAllCoins();
+  const [, coinCount] = await getCoinCount();
 
   if (coins && !coins.length) {
     return <NotFound />;
@@ -29,7 +31,7 @@ export default async function Home(props: PageProps) {
       <DataTable
         columns={columns}
         data={coins ?? []}
-        rowCount={allCoins?.length ?? coins?.length ?? 0}
+        rowCount={coinCount ?? coins?.length ?? 0}
         rowsPerPage={params.perPage}
         currentPage={params.page}
         tableBody={

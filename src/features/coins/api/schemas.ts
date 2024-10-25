@@ -9,7 +9,9 @@ import {
   handlePriceChangeDisplay,
 } from '@/features/coins/utils/formatting';
 
-export const coinsList = z.array(z.object({}));
+export const coinsListCount = z
+  .array(z.object({}))
+  .transform((val) => val.length);
 
 export const priceChangePercentage = z.number().nullish();
 

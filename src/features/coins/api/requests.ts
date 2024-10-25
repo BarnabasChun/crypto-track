@@ -1,11 +1,12 @@
 import { env } from '@/config/env';
 import {
   coinDetails,
-  coinsList,
+  coinsListCount,
   coinsWithMarketData,
   getCoinsWithMarketDataParams,
 } from './schemas';
 import { z } from 'zod';
+import { unstable_cacheLife as cacheLife } from 'next/cache';
 
 const BASE_URL = 'https://api.coingecko.com/api/v3';
 
@@ -60,10 +61,11 @@ async function request<T extends z.ZodTypeAny>(
   return [new ErrorResponse('Unknown error', 500), undefined];
 }
 
-export async function getAllCoins() {
-  return request('/coins/list', coinsList, {
-    next: { revalidate: 60 * 60 * 1 },
-  });
+export async function getCoinCount() {
+  'use cache';
+  cacheLife('hours');
+
+  return request('/coins/list', coinsListCount);
 }
 
 export async function getCoinsMarketData({
