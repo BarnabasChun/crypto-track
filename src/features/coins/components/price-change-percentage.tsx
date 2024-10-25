@@ -8,25 +8,25 @@ interface PriceChangePercentageDisplayDetails {
   icon: React.ReactNode;
 }
 
-interface PriceChangeCellProps {
-  priceChangePercentageAmount: z.infer<typeof priceChangePercentage>;
-  priceChangePercentageDisplay: string;
+interface PriceChangePercentageProps {
+  amount: z.infer<typeof priceChangePercentage>;
+  display: string;
 }
 
-export function PriceChangePercentageCell({
-  priceChangePercentageAmount,
-  priceChangePercentageDisplay,
-}: PriceChangeCellProps) {
+export function PriceChangePercentage({
+  amount,
+  display,
+}: PriceChangePercentageProps) {
   const getPriceChangePercentageDisplayDetails =
     (): PriceChangePercentageDisplayDetails => {
-      if (!priceChangePercentageAmount) {
+      if (!amount) {
         return {
           className: '',
           icon: null,
         };
       }
 
-      if (priceChangePercentageAmount > 0) {
+      if (amount > 0) {
         return {
           className: 'text-green-700 dark:text-green-500',
           icon: <ChevronUp />,
@@ -44,7 +44,7 @@ export function PriceChangePercentageCell({
   return (
     <div className={`flex justify-end ${className}`}>
       {icon && icon}
-      {priceChangePercentageDisplay ?? '-'}
+      {display ?? '-'}
     </div>
   );
 }

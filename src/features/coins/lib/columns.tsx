@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { CoinWithMarketData } from '@/features/coins/api/schemas';
 import { Button } from '@/components/ui/button';
-import { PriceChangePercentageCell } from '@/features/coins/components/data-table/price-change-percentage-cell';
+import { PriceChangePercentage } from '@/features/coins/components/price-change-percentage';
 import { DataTableColumnHeader } from '@/features/coins/components/data-table/data-table-column-header';
 import { sortRawMarketData } from '@/features/coins/utils/column-sorting';
 
@@ -74,9 +74,9 @@ export const columns = [
       <DataTableColumnHeader header={header}>1h</DataTableColumnHeader>
     ),
     cell: ({ row }) => (
-      <PriceChangePercentageCell
-        priceChangePercentageAmount={row.original.raw.priceChange1h}
-        priceChangePercentageDisplay={row.original.display.priceChange1h}
+      <PriceChangePercentage
+        amount={row.original.raw.priceChange1h}
+        display={row.original.display.priceChange1h}
       />
     ),
     sortDescFirst: true,
@@ -87,9 +87,9 @@ export const columns = [
       <DataTableColumnHeader header={header}>24h</DataTableColumnHeader>
     ),
     cell: ({ row }) => (
-      <PriceChangePercentageCell
-        priceChangePercentageAmount={row.original.raw.priceChange24h}
-        priceChangePercentageDisplay={row.original.display.priceChange24h}
+      <PriceChangePercentage
+        amount={row.original.raw.priceChange24h}
+        display={row.original.display.priceChange24h}
       />
     ),
     sortDescFirst: true,
@@ -100,9 +100,9 @@ export const columns = [
       <DataTableColumnHeader header={header}>7d</DataTableColumnHeader>
     ),
     cell: ({ row }) => (
-      <PriceChangePercentageCell
-        priceChangePercentageAmount={row.original.raw.priceChange7d}
-        priceChangePercentageDisplay={row.original.display.priceChange7d}
+      <PriceChangePercentage
+        amount={row.original.raw.priceChange7d}
+        display={row.original.display.priceChange7d}
       />
     ),
     sortDescFirst: true,

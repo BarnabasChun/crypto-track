@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
 import { getCoin } from '@/features/coins/api/requests';
-import { PriceChangePercentageCell } from '@/features/coins/components/data-table/price-change-percentage-cell';
+import { PriceChangePercentage } from '@/features/coins/components/price-change-percentage';
 
 export default async function CoinDetailsPage(props: {
   params: Promise<{ id: string }>;
@@ -24,9 +24,9 @@ export default async function CoinDetailsPage(props: {
 
           <div className="flex gap-1">
             <span className="font-bold">{marketData.display.currentPrice}</span>{' '}
-            <PriceChangePercentageCell
-              priceChangePercentageAmount={marketData.raw.priceChange24h}
-              priceChangePercentageDisplay={marketData.display.priceChange24h}
+            <PriceChangePercentage
+              amount={marketData.raw.priceChange24h}
+              display={marketData.display.priceChange24h}
             />
           </div>
         </section>
