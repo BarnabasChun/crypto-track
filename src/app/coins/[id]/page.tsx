@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
 import { getCoin } from '@/features/coins/api/requests';
 import { PriceChangePercentage } from '@/features/coins/components/price-change-percentage';
+import { ChartSection } from '@/features/coins/components/chart-section';
 
 export default async function CoinDetailsPage(props: {
   params: Promise<{ id: string }>;
@@ -20,7 +21,7 @@ export default async function CoinDetailsPage(props: {
 
   return (
     <div className="container mx-auto p-4">
-      <section>
+      <section className="mb-2">
         <div className="flex items-center gap-2">
           <Image src={imageUrl} alt="" width={25} height={25} />
           <h1 className="text-2xl font-bold">{name}</h1>{' '}
@@ -36,6 +37,8 @@ export default async function CoinDetailsPage(props: {
           />
         </div>
       </section>
+
+      <ChartSection />
     </div>
   );
 }
