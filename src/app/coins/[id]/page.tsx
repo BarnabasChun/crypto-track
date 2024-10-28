@@ -10,31 +10,32 @@ export default async function CoinDetailsPage(props: {
   const params = await props.params;
   const [error, coinDetails] = await getCoin(params.id);
 
-  if (coinDetails) {
-    const { name, symbol, imageUrl, rank, marketData } = coinDetails;
-    return (
-      <div className="container mx-auto p-4">
-        <section>
-          <div className="flex items-center gap-2">
-            <Image src={imageUrl} alt="" width={25} height={25} />
-            <h1 className="text-2xl font-bold">{name}</h1>{' '}
-            <span className="text-muted-foreground">{symbol}</span>
-            {rank && <Badge variant="secondary">#{rank}</Badge>}
-          </div>
+  if (error) {
+    error.statusCode === 404 && notFound();
 
-          <div className="flex gap-1">
-            <span className="font-bold">{marketData.display.currentPrice}</span>{' '}
-            <PriceChangePercentage
-              amount={marketData.raw.priceChange24h}
-              display={marketData.display.priceChange24h}
-            />
-          </div>
-        </section>
-      </div>
-    );
+    return null;
   }
 
-  if (error.statusCode === 404) {
-    notFound();
-  }
+  const { name, symbol, imageUrl, rank, marketData } = coinDetails;
+
+  return (
+    <div className="container mx-auto p-4">
+      <section>
+        <div className="flex items-center gap-2">
+          <Image src={imageUrl} alt="" width={25} height={25} />
+          <h1 className="text-2xl font-bold">{name}</h1>{' '}
+          <span className="text-muted-foreground">{symbol}</span>
+          {rank && <Badge variant="secondary">#{rank}</Badge>}
+        </div>
+
+        <div className="flex gap-1">
+          <span className="font-bold">{marketData.display.currentPrice}</span>{' '}
+          <PriceChangePercentage
+            amount={marketData.raw.priceChange24h}
+            display={marketData.display.priceChange24h}
+          />
+        </div>
+      </section>
+    </div>
+  );
 }
