@@ -12,7 +12,7 @@ export default async function CoinDetailsPage(props: {
   const [error, coinDetails] = await getCoin(params.id);
 
   if (error) {
-    error.statusCode === 404 && notFound();
+    if (error.statusCode === 404) notFound();
 
     return null;
   }
