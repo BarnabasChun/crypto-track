@@ -1,11 +1,11 @@
 import {
-  getCoinCount,
   getCoinsMarketData,
-} from '@/features/coins/api/requests';
-import { columns } from '@/features/coins/lib/columns';
-import { DataTable } from '@/features/coins/components/data-table/data-table';
+  getCoinsWithMarketDataParams,
+} from '@/features/coins/list/api/get-coins-market-data';
+import { getCoinsCount } from '@/features/coins/list/api/get-coins-count';
+import { columns } from '@/features/coins/list/lib/columns';
+import { DataTable } from '@/features/coins/list/components/data-table';
 import { PageProps } from '@/types';
-import { getCoinsWithMarketDataParams } from '@/features/coins/api/schemas';
 import NotFound from '@/app/not-found';
 import { TableCell, TableRow } from '@/components/ui/table';
 
@@ -16,7 +16,7 @@ export default async function Home(props: PageProps) {
     perPage: searchParams.per_page,
   });
   const [, coins] = await getCoinsMarketData(params);
-  const [, coinCount] = await getCoinCount();
+  const [, coinsCount] = await getCoinsCount();
 
   if (coins && !coins.length) {
     return <NotFound />;
@@ -31,7 +31,7 @@ export default async function Home(props: PageProps) {
       <DataTable
         columns={columns}
         data={coins ?? []}
-        rowCount={coinCount ?? coins?.length ?? 0}
+        rowCount={coinsCount ?? coins?.length ?? 0}
         rowsPerPage={params.perPage}
         currentPage={params.page}
         tableBody={

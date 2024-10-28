@@ -1,5 +1,4 @@
 import { z } from 'zod';
-
 import {
   DEFAULT_CURRENCY,
   DEFAULT_PER_PAGE_OPTION,
@@ -7,13 +6,9 @@ import {
 import {
   handleCurrencyAmountDisplay,
   handlePriceChangeDisplay,
-} from '@/features/coins/utils/formatting';
-
-export const coinsListCount = z
-  .array(z.object({}))
-  .transform((val) => val.length);
-
-export const priceChangePercentage = z.number().nullish();
+} from '@/features/coins/list/utils/formatting';
+import { request } from '@/features/coins/utils/request';
+import { priceChangePercentage } from '@/features/coins/utils/schemas';
 
 export const currencyAmount = z.number().nullable();
 
@@ -93,48 +88,15 @@ export const getCoinsWithMarketDataParams = z.object({
     .transform((val) => (val ? parseInt(val) : DEFAULT_PER_PAGE_OPTION)),
 });
 
-const marketDataCurrencyMap = z.record(z.string(), z.number());
+export async function getCoinsMarketData({
+  currency,
+  page,
+  perPage,
+}: z.output<typeof getCoinsWithMarketDataParams>) {
+  return request(
+    `/coins/markets?vs_currency=${currency}&page=${page}&per_page=${perPage}&price_change_percentage=1h,24h,7d`,
+    coinsWithMarketData
+  );
+}
 
-export const coinDetails = z
-  .object({
-    id: z.string(),
-    name: z.string(),
-    symbol: z.string(),
-    market_data: z.object({
-      current_price: marketDataCurrencyMap,
-      price_change_percentage_24h_in_currency: marketDataCurrencyMap,
-    }),
-    image: z.object({
-      thumb: z.string(),
-      small: z.string(),
-      large: z.string(),
-    }),
-    market_cap_rank: z.number().nullable(),
-  })
-  .transform(({ image, symbol, market_cap_rank, market_data, ...props }) => {
-    return {
-      ...props,
-      symbol: symbol.toUpperCase(),
-      imageUrl: image.thumb,
-      rank: market_cap_rank,
-      marketData: {
-        raw: {
-          currentPrice: market_data.current_price[DEFAULT_CURRENCY],
-          priceChange24h:
-            market_data.price_change_percentage_24h_in_currency[
-              DEFAULT_CURRENCY
-            ],
-        },
-        display: {
-          currentPrice: handleCurrencyAmountDisplay(
-            market_data.current_price[DEFAULT_CURRENCY]
-          ),
-          priceChange24h: handlePriceChangeDisplay(
-            market_data.price_change_percentage_24h_in_currency[
-              DEFAULT_CURRENCY
-            ]
-          ),
-        },
-      },
-    };
-  });
+export type CoinWithMarketData = z.infer<typeof coinWithMarketData>;

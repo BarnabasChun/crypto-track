@@ -7,8 +7,8 @@ import Link from 'next/link';
 import { type CoinWithMarketData } from '@/features/coins/api/types';
 import { Button } from '@/components/ui/button';
 import { PriceChangePercentage } from '@/features/coins/components/price-change-percentage';
-import { DataTableColumnHeader } from '@/features/coins/components/data-table/data-table-column-header';
-import { sortRawMarketData } from '@/features/coins/utils/column-sorting';
+import { DataTableColumnHeader } from '@/features/coins/list/components/data-table-column-header';
+import { sortRawMarketData } from '@/features/coins/list/utils/column-sorting';
 
 const columnHelper = createColumnHelper<CoinWithMarketData>();
 export const columns = [

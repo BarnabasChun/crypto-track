@@ -1,7 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { z } from 'zod';
-
-import { priceChangePercentage } from '@/features/coins/api/schemas';
+import { priceChangePercentage } from '../utils/schemas';
 
 interface PriceChangePercentageDisplayDetails {
   className: string;

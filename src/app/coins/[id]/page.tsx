@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
-import { getCoin } from '@/features/coins/api/requests';
+import { getCoin } from '@/features/coins/details/api/get-coin-details';
 import { PriceChangePercentage } from '@/features/coins/components/price-change-percentage';
-import { ChartSection } from '@/features/coins/components/chart-section';
+import { ChartSection } from '@/features/coins/details/components/chart-section';
 
 export default async function CoinDetailsPage(props: {
   params: Promise<{ id: string }>;

@@ -1,12 +1,5 @@
-import { z } from 'zod';
-import { unstable_cacheLife as cacheLife } from 'next/cache';
 import { env } from '@/config/env';
-import {
-  coinDetails,
-  coinsListCount,
-  coinsWithMarketData,
-  getCoinsWithMarketDataParams,
-} from './schemas';
+import { z } from 'zod';
 
 const BASE_URL = 'https://api.coingecko.com/api/v3';
 
@@ -25,7 +18,7 @@ class ErrorResponse extends Error {
   }
 }
 
-async function request<T extends z.ZodTypeAny>(
+export async function request<T extends z.ZodTypeAny>(
   endpoint: string,
   schema: T,
   options?: RequestInit
@@ -59,26 +52,4 @@ async function request<T extends z.ZodTypeAny>(
   }
 
   return [new ErrorResponse('Unknown error', 500), undefined];
-}
-
-export async function getCoinCount() {
-  'use cache';
-  cacheLife('hours');
-
-  return request('/coins/list', coinsListCount);
-}
-
-export async function getCoinsMarketData({
-  currency,
-  page,
-  perPage,
-}: z.output<typeof getCoinsWithMarketDataParams>) {
-  return request(
-    `/coins/markets?vs_currency=${currency}&page=${page}&per_page=${perPage}&price_change_percentage=1h,24h,7d`,
-    coinsWithMarketData
-  );
-}
-
-export async function getCoin(id: string) {
-  return request(`/coins/${id}`, coinDetails);
 }
