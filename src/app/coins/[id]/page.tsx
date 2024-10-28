@@ -4,6 +4,13 @@ import { Badge } from '@/components/ui/badge';
 import { getCoin } from '@/features/coins/details/api/get-coin-details';
 import { PriceChangePercentage } from '@/features/coins/components/price-change-percentage';
 import { ChartSection } from '@/features/coins/details/components/chart-section';
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from '@tanstack/react-query';
+import { getChartDataQueryOptions } from '@/features/coins/details/api/get-chart-data';
+import { DEFAULT_CURRENCY } from '@/features/coins/constants';
 
 export default async function CoinDetailsPage(props: {
   params: Promise<{ id: string }>;
@@ -18,6 +25,12 @@ export default async function CoinDetailsPage(props: {
   }
 
   const { name, symbol, imageUrl, rank, marketData } = coinDetails;
+
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery(
+    getChartDataQueryOptions(params.id, { currency: DEFAULT_CURRENCY, days: 1 })
+  );
 
   return (
     <div className="container mx-auto p-4">
@@ -38,7 +51,9 @@ export default async function CoinDetailsPage(props: {
         </div>
       </section>
 
-      <ChartSection />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <ChartSection id={params.id} currency={DEFAULT_CURRENCY} days={1} />
+      </HydrationBoundary>
     </div>
   );
 }
