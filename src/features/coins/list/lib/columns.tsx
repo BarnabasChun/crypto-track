@@ -4,11 +4,11 @@ import { createColumnHelper } from '@tanstack/react-table';
 import { Star } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { type CoinWithMarketData } from '@/features/coins/api/types';
 import { Button } from '@/components/ui/button';
-import { PriceChangePercentage } from '@/features/coins/components/price-change-percentage';
-import { DataTableColumnHeader } from '@/features/coins/list/components/data-table-column-header';
-import { sortRawMarketData } from '@/features/coins/list/utils/column-sorting';
+import { PriceChangePercentage } from '../../components/price-change-percentage';
+import { DataTableColumnHeader } from '../../list/components/data-table-column-header';
+import { sortRawMarketData } from '../../list/utils/column-sorting';
+import { type CoinWithMarketData } from '../api/get-coins-market-data';
 
 const columnHelper = createColumnHelper<CoinWithMarketData>();
 export const columns = [

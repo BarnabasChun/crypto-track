@@ -1,5 +1,5 @@
-import { request } from '@/features/coins/utils/request';
 import { z } from 'zod';
+import { request } from '../../utils/request';
 import { DEFAULT_CURRENCY } from '../../constants';
 import {
   handleCurrencyAmountDisplay,

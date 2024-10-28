@@ -2,7 +2,7 @@ import { formatCurrency } from '@coingecko/cryptoformat';
 import { z } from 'zod';
 import { transformToSingleDigitPercent } from '@/utils/formatting';
 import { currencyAmount } from '../api/get-coins-market-data';
-import { priceChangePercentage } from '@/features/coins/utils/schemas';
+import { priceChangePercentage } from '../../utils/schemas';
 
 export const handlePriceChangeDisplay = (
   priceChange: z.infer<typeof priceChangePercentage>

@@ -1,14 +1,11 @@
 import { z } from 'zod';
-import {
-  DEFAULT_CURRENCY,
-  DEFAULT_PER_PAGE_OPTION,
-} from '@/features/coins/constants';
+import { DEFAULT_CURRENCY, DEFAULT_PER_PAGE_OPTION } from '../../constants';
 import {
   handleCurrencyAmountDisplay,
   handlePriceChangeDisplay,
-} from '@/features/coins/list/utils/formatting';
-import { request } from '@/features/coins/utils/request';
-import { priceChangePercentage } from '@/features/coins/utils/schemas';
+} from '../../list/utils/formatting';
+import { request } from '../../utils/request';
+import { priceChangePercentage } from '../../utils/schemas';
 
 export const currencyAmount = z.number().nullable();
 

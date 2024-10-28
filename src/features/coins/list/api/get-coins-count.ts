@@ -1,6 +1,6 @@
 import { unstable_cacheLife as cacheLife } from 'next/cache';
-import { request } from '@/features/coins/utils/request';
 import { z } from 'zod';
+import { request } from '../../utils/request';
 
 const coinsListCount = z.array(z.object({})).transform((val) => val.length);
 
