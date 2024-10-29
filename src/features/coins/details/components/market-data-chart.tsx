@@ -7,13 +7,18 @@ import { ChartDataPoint, useChartDataQuery } from '../api/get-chart-data';
 interface MarketDataChartProps {
   days: number;
   currency: string;
+  metric: 'price' | 'marketCap';
 }
 
 type ChartDataPointWithDate = Omit<ChartDataPoint, 'timestamp'> & {
   date: Date;
 };
 
-export function MarketDataChart({ days, currency }: MarketDataChartProps) {
+export function MarketDataChart({
+  days,
+  currency,
+  metric,
+}: MarketDataChartProps) {
   const { id } = useParams();
   const { status, data } = useChartDataQuery(id as string, {
     days,
@@ -42,7 +47,7 @@ export function MarketDataChart({ days, currency }: MarketDataChartProps) {
   );
 
   const xAccessor = (d: ChartDataPointWithDate) => d.date;
-  const yAccessor = (d: ChartDataPointWithDate) => d.price;
+  const yAccessor = (d: ChartDataPointWithDate) => d[metric];
 
   const xScale = scaleUtc(
     extent(dataWithDate, xAccessor) as ReturnType<typeof xAccessor>[],
@@ -67,19 +72,21 @@ export function MarketDataChart({ days, currency }: MarketDataChartProps) {
 
   const line = lineGenerator(dataWithDate)!;
 
-  const firstPrice = dataWithDate[0].price;
-  const lastPrice = dataWithDate.at(-1)!.price;
-  const priceTrend =
-    Math.sign(lastPrice - firstPrice) === 1 ? 'positive' : 'negative';
+  const firstMetricValue = dataWithDate[0][metric];
+  const lastMetricValue = dataWithDate.at(-1)![metric];
+  const metricTrend =
+    Math.sign(lastMetricValue - firstMetricValue) === 1
+      ? 'positive'
+      : 'negative';
 
   return (
     <svg width={width} height={height}>
       <path
-        className={`${priceTrend === 'positive' ? 'fill-green-200' : 'fill-red-200'}`}
+        className={`${metricTrend === 'positive' ? 'fill-green-200' : 'fill-red-200'}`}
         d={area}
       />
       <path
-        className={`${priceTrend === 'positive' ? 'stroke-green-600' : 'stroke-red-600'}`}
+        className={`${metricTrend === 'positive' ? 'stroke-green-600' : 'stroke-red-600'}`}
         fill="none"
         d={line}
         strokeWidth={2}

@@ -8,7 +8,9 @@ import { MarketDataChart } from './market-data-chart';
 
 export function ChartSection() {
   const [chartView, setChartView] = useState('line');
-  const [chartMetric, setChartMetric] = useState('price');
+  const [chartMetric, setChartMetric] = useState<'price' | 'marketCap'>(
+    'price'
+  );
   const [timeRange, setTimeRange] = useState(
     `${DEFAULT_CHART_DATA_PARAMS.days}`
   );
@@ -39,7 +41,9 @@ export function ChartSection() {
           size="sm"
           className="border border-gray-200 rounded-sm p-1 flex-grow sm:flex-grow-0"
           value={chartMetric}
-          onValueChange={setChartMetric}
+          onValueChange={(value) =>
+            setChartMetric(value as 'price' | 'marketCap')
+          }
         >
           <ToggleGroupItem
             className="flex-grow"
@@ -80,6 +84,7 @@ export function ChartSection() {
       <MarketDataChart
         days={Number(timeRange)}
         currency={DEFAULT_CHART_DATA_PARAMS.currency}
+        metric={chartMetric}
       />
     </section>
   );
