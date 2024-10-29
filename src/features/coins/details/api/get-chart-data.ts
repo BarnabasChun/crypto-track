@@ -4,7 +4,10 @@ import { request } from '../../utils/request';
 
 export const getChartDataParams = z.object({
   currency: z.string(),
-  days: z.string().transform((val) => parseInt(val)),
+  days: z
+    .string()
+    .transform((val) => parseInt(val))
+    .pipe(z.number()),
 });
 
 const historicalChartData = z.array(z.tuple([z.number(), z.number()]));
