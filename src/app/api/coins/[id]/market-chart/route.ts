@@ -21,17 +21,23 @@ export async function GET(
     return Response.json({ error: parsedParams.error }, { status: 400 });
   }
 
-  const [error, data] = await _getChartData(
-    requestParams.id,
-    parsedParams.data
-  );
+  try {
+    const [error, data] = await _getChartData(
+      requestParams.id,
+      parsedParams.data
+    );
 
-  if (data) {
-    return Response.json(data);
+    if (data) {
+      return Response.json(data);
+    }
+
+    return Response.json(
+      { message: error.message, statusCode: error.statusCode },
+      { status: error.statusCode }
+    );
+  } catch (error) {
+    console.error(error);
+
+    return Response.json({ message: 'Unknown error', statusCode: 500 });
   }
-
-  return Response.json(
-    { message: error.message, statusCode: error.statusCode },
-    { status: error.statusCode }
-  );
 }
