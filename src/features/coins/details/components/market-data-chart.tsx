@@ -1,4 +1,3 @@
-import styles from './market-data.module.css';
 import { useParams } from 'next/navigation';
 import { scaleUtc, scaleLinear } from 'd3-scale';
 import { extent } from 'd3-array';
@@ -75,9 +74,12 @@ export function MarketDataChart({ days, currency }: MarketDataChartProps) {
 
   return (
     <svg width={width} height={height}>
-      <path className={`${styles[`area--${priceTrend}`]}`} d={area} />
       <path
-        className={`${styles[`line--${priceTrend}`]}`}
+        className={`${priceTrend === 'positive' ? 'fill-green-200' : 'fill-red-200'}`}
+        d={area}
+      />
+      <path
+        className={`${priceTrend === 'positive' ? 'stroke-green-600' : 'stroke-red-600'}`}
         fill="none"
         d={line}
         strokeWidth={2}
