@@ -3,24 +3,15 @@
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { ChartCandlestickIcon, ChartLineIcon } from 'lucide-react';
 import React, { useState } from 'react';
-import { CHART_RANGE_OPTIONS } from '../constants';
-import { useChartDataQuery } from '../api/get-chart-data';
+import { CHART_RANGE_OPTIONS, DEFAULT_CHART_DATA_PARAMS } from '../constants';
+import { MarketDataChart } from './market-data-chart';
 
-interface ChartSectionProps {
-  id: string;
-  days: number;
-  currency: string;
-}
-
-export function ChartSection(props: ChartSectionProps) {
+export function ChartSection() {
   const [chartView, setChartView] = useState('line');
   const [chartMetric, setChartMetric] = useState('price');
-  const [timeRange, setTimeRange] = useState(`${props.days}`);
-
-  useChartDataQuery(props.id, {
-    days: +timeRange,
-    currency: props.currency,
-  });
+  const [timeRange, setTimeRange] = useState(
+    `${DEFAULT_CHART_DATA_PARAMS.days}`
+  );
 
   return (
     <section>
@@ -85,6 +76,11 @@ export function ChartSection(props: ChartSectionProps) {
           ))}
         </ToggleGroup>
       </div>
+
+      <MarketDataChart
+        days={Number(timeRange)}
+        currency={DEFAULT_CHART_DATA_PARAMS.currency}
+      />
     </section>
   );
 }

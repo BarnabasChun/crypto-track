@@ -10,7 +10,7 @@ import {
   QueryClient,
 } from '@tanstack/react-query';
 import { getChartDataQueryOptions } from '@/features/coins/details/api/get-chart-data';
-import { DEFAULT_CURRENCY } from '@/features/coins/constants';
+import { DEFAULT_CHART_DATA_PARAMS } from '@/features/coins/details/constants';
 
 export default async function CoinDetailsPage(props: {
   params: Promise<{ id: string }>;
@@ -29,7 +29,7 @@ export default async function CoinDetailsPage(props: {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery(
-    getChartDataQueryOptions(params.id, { currency: DEFAULT_CURRENCY, days: 1 })
+    getChartDataQueryOptions(params.id, DEFAULT_CHART_DATA_PARAMS)
   );
 
   return (
@@ -52,7 +52,7 @@ export default async function CoinDetailsPage(props: {
       </section>
 
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <ChartSection id={params.id} currency={DEFAULT_CURRENCY} days={1} />
+        <ChartSection />
       </HydrationBoundary>
     </div>
   );

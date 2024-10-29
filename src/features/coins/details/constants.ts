@@ -1,3 +1,5 @@
+import { DEFAULT_CURRENCY } from '../constants';
+
 export const CHART_RANGE_OPTIONS = [
   {
     label: '1d',
@@ -25,3 +27,8 @@ export const CHART_RANGE_OPTIONS = [
     ariaLabel: 'View 1 year of data',
   },
 ] as const;
+
+export const DEFAULT_CHART_DATA_PARAMS = {
+  days: 1,
+  currency: DEFAULT_CURRENCY,
+};
