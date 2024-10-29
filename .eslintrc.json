@@ -6,6 +6,8 @@
     "prettier"
   ],
   "rules": {
+    "prefer-arrow-callback": "error",
+    "func-style": ["error", "declaration", { "allowArrowFunctions": true }],
     "import/order": [
       "error",
       {
