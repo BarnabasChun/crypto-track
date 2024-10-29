@@ -7,17 +7,17 @@
   ],
   "rules": {
     "prefer-arrow-callback": "error",
-    "func-style": ["error", "declaration", { "allowArrowFunctions": true }],
-    "import/order": [
-      "error",
-      {
-        "pathGroups": [
-          {
-            "pattern": "@/**",
-            "group": "external"
-          }
-        ]
-      }
-    ]
+    "func-style": ["error", "declaration", { "allowArrowFunctions": true }]
+    // "import/order": [
+    //   "error",
+    //   {
+    //     "pathGroups": [
+    //       {
+    //         "pattern": "@/**",
+    //         "group": "external"
+    //       }
+    //     ]
+    //   }
+    // ]
   }
 }

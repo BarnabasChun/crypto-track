@@ -1,0 +1,15 @@
+.area--positive {
+  @apply fill-green-200;
+}
+
+.line--positive {
+  @apply stroke-green-600;
+}
+
+.area--negative {
+  @apply fill-red-200;
+}
+
+.line--negative {
+  @apply stroke-red-600;
+}

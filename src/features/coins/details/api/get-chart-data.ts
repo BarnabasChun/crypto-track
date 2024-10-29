@@ -12,6 +12,13 @@ export const getChartDataParams = z.object({
 
 const historicalChartData = z.array(z.tuple([z.number(), z.number()]));
 
+export interface ChartDataPoint {
+  timestamp: number;
+  price: number;
+  volume: number;
+  marketCap: number;
+}
+
 const chartData = z
   .object({
     prices: historicalChartData,
@@ -19,7 +26,7 @@ const chartData = z
     market_caps: historicalChartData,
   })
   .transform(({ prices, total_volumes, market_caps }) => {
-    const data = [];
+    const data: ChartDataPoint[] = [];
 
     for (let i = 0; i < prices.length; i++) {
       const [timestamp, price] = prices[i];
