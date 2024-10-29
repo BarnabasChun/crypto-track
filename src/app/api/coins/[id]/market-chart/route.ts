@@ -18,7 +18,10 @@ export async function GET(
   });
 
   if (!parsedParams.success) {
-    return Response.json({ error: parsedParams.error }, { status: 400 });
+    return Response.json(
+      { message: parsedParams.error, statusCode: 400 },
+      { status: 400 }
+    );
   }
 
   try {
