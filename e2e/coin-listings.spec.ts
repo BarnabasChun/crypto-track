@@ -1,7 +1,7 @@
 import {
   DEFAULT_PER_PAGE_OPTION,
   PER_PAGE_OPTIONS,
-} from '@/features/coins/constants';
+} from '@/features/coins/list/constants';
 import AxeBuilder from '@axe-core/playwright';
 import { test, expect, Page, Locator } from '@playwright/test';
 

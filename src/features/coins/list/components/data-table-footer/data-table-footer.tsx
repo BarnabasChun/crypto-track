@@ -9,7 +9,7 @@ import { usePagination } from '@/hooks/use-pagination/use-pagination';
 import { useEffect, useState } from 'react';
 import { RowsPerPageSelector } from '../../../list/components/data-table-footer/rows-per-page-selector';
 import { DataTablePaginationItem } from '../../../list/components/data-table-footer/data-table-pagination-item';
-import { DEFAULT_PER_PAGE_OPTION } from '../../../constants';
+import { DEFAULT_PER_PAGE_OPTION } from '../../constants';
 
 interface DataTableFooterProps<TData> {
   table: Table<TData>;

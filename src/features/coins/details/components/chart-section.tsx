@@ -3,7 +3,7 @@
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { ChartCandlestickIcon, ChartLineIcon } from 'lucide-react';
 import React, { useState } from 'react';
-import { CHART_RANGE_OPTIONS } from '../../constants';
+import { CHART_RANGE_OPTIONS } from '../constants';
 import { useChartDataQuery } from '../api/get-chart-data';
 
 interface ChartSectionProps {

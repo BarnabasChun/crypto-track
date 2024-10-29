@@ -5,7 +5,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { PER_PAGE_OPTIONS } from '../../../constants';
+import { PER_PAGE_OPTIONS } from '../../constants';
 
 interface RowsPerPageSelectorProps {
   value: number;

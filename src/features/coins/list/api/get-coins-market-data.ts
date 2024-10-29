@@ -1,11 +1,12 @@
 import { z } from 'zod';
-import { DEFAULT_CURRENCY, DEFAULT_PER_PAGE_OPTION } from '../../constants';
+import { DEFAULT_CURRENCY } from '../../constants';
+import { request } from '../../utils/request';
+import { priceChangePercentage } from '../../utils/schemas';
+import { DEFAULT_PER_PAGE_OPTION } from '../constants';
 import {
   handleCurrencyAmountDisplay,
   handlePriceChangeDisplay,
 } from '../../list/utils/formatting';
-import { request } from '../../utils/request';
-import { priceChangePercentage } from '../../utils/schemas';
 
 export const currencyAmount = z.number().nullable();
 
