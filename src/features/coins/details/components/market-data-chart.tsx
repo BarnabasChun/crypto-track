@@ -70,7 +70,7 @@ export function MarketDataChart({ days, currency }: MarketDataChartProps) {
   const firstPrice = dataWithDate[0].price;
   const lastPrice = dataWithDate.at(-1)!.price;
   const priceTrend =
-    Math.sign(lastPrice - firstPrice) > 1 ? 'positive' : 'negative';
+    Math.sign(lastPrice - firstPrice) === 1 ? 'positive' : 'negative';
 
   return (
     <svg width={width} height={height}>
