@@ -7,15 +7,21 @@ const formatMonth = timeFormat('%b');
 const formatYear = timeFormat('%Y');
 
 function getDateFormatter(date: Date): (date: Date) => string {
-  if (timeDay(date) < date) {
+  const isAfterDayStart = timeDay(date) < date;
+
+  if (isAfterDayStart) {
     return formatHour;
   }
 
-  if (timeMonth(date) < date) {
+  const isAfterMonthStart = timeMonth(date) < date;
+
+  if (isAfterMonthStart) {
     return formatDay;
   }
 
-  if (timeYear(date) < date) {
+  const isAfterYearStart = timeYear(date) < date;
+
+  if (isAfterYearStart) {
     return formatMonth;
   }
 
