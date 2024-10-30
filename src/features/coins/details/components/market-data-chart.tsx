@@ -4,12 +4,21 @@ import { extent, min } from 'd3-array';
 import { area as d3Area, line as d3Line } from 'd3-shape';
 import { ChartDataPoint, useChartDataQuery } from '../api/get-chart-data';
 import { contextualDateFormat } from '../utils/formatting';
+import { useRef, useState } from 'react';
+import { useDebounceCallback, useResizeObserver } from 'usehooks-ts';
 
 interface MarketDataChartProps {
   days: number;
   currency: string;
   metric: 'price' | 'marketCap';
 }
+
+type Size = {
+  width: number;
+  height: number;
+};
+
+type UseResizeObserverSize = Partial<Size>;
 
 export function MarketDataChart({
   days,
@@ -20,6 +29,29 @@ export function MarketDataChart({
   const { status, data } = useChartDataQuery(id as string, {
     days,
     currency,
+  });
+  const ref = useRef<HTMLDivElement>(null);
+  const [{ width, height }, setSize] = useState<Size>({
+    width: 928,
+    height: 500,
+  });
+
+  const handleResize = (size: UseResizeObserverSize) => {
+    if (size.height !== undefined && size.width !== undefined) {
+      setSize({
+        width: size.width,
+        height: size.height,
+      });
+    }
+  };
+
+  const onResize = useDebounceCallback(handleResize, 200);
+
+  useResizeObserver({
+    // @ts-expect-error `usehooks-ts` package has inaccurate typing.
+    ref,
+    onResize,
+    box: 'border-box',
   });
 
   if (status === 'error') {
@@ -32,8 +64,6 @@ export function MarketDataChart({
     return <div>Loading...</div>;
   }
 
-  const width = 928;
-  const height = 500;
   const marginTop = 20;
   const marginRight = 30;
   const marginBottom = 20;
@@ -85,39 +115,44 @@ export function MarketDataChart({
       : 'negative';
 
   return (
-    <svg
-      width={width}
-      height={height}
-      // TODO: remove border after dev complete... for spacial reference
-      className="border border-black"
-    >
-      <path
-        className={`${metricTrend === 'positive' ? 'fill-green-200' : 'fill-red-200'}`}
-        d={area}
-      />
-      <path
-        className={`${metricTrend === 'positive' ? 'stroke-green-600' : 'stroke-red-600'}`}
-        fill="none"
-        d={line}
-        strokeWidth={2}
-      />
+    <div ref={ref}>
+      <svg
+        width={width}
+        height={height}
+        // TODO: remove border after dev complete... for spacial reference
+        className="border border-black"
+      >
+        <path
+          className={`${metricTrend === 'positive' ? 'fill-green-200' : 'fill-red-200'}`}
+          d={area}
+        />
+        <path
+          className={`${metricTrend === 'positive' ? 'stroke-green-600' : 'stroke-red-600'}`}
+          fill="none"
+          d={line}
+          strokeWidth={2}
+        />
 
-      <g transform={`translate(0, ${height - marginBottom})`}>
-        {xAxisTicks.map(({ value, xOffset }) => (
-          <g key={`${value}-${xOffset}`} transform={`translate(${xOffset}, 0)`}>
-            <text
-              key={value}
-              style={{
-                fontSize: '10px',
-                textAnchor: 'middle',
-                transform: 'translateY(15px)',
-              }}
+        <g transform={`translate(0, ${height - marginBottom})`}>
+          {xAxisTicks.map(({ value, xOffset }) => (
+            <g
+              key={`${value}-${xOffset}`}
+              transform={`translate(${xOffset}, 0)`}
             >
-              {value}
-            </text>
-          </g>
-        ))}
-      </g>
-    </svg>
+              <text
+                key={value}
+                style={{
+                  fontSize: '10px',
+                  textAnchor: 'middle',
+                  transform: 'translateY(15px)',
+                }}
+              >
+                {value}
+              </text>
+            </g>
+          ))}
+        </g>
+      </svg>
+    </div>
   );
 }
