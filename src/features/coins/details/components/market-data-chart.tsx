@@ -36,7 +36,7 @@ export function MarketDataChart({
   const height = 500;
   const marginTop = 20;
   const marginRight = 30;
-  const marginBottom = 30;
+  const marginBottom = 20;
   const marginLeft = 0;
 
   const xAccessor = (d: ChartDataPoint) => d.timestamp;
@@ -102,7 +102,7 @@ export function MarketDataChart({
         strokeWidth={2}
       />
 
-      <g>
+      <g transform={`translate(0, ${height - marginBottom})`}>
         {xAxisTicks.map(({ value, xOffset }) => (
           <g key={`${value}-${xOffset}`} transform={`translate(${xOffset}, 0)`}>
             <text
