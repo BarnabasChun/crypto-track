@@ -2,10 +2,7 @@ import { useParams } from 'next/navigation';
 import { scaleUtc, scaleLinear } from 'd3-scale';
 import { extent } from 'd3-array';
 import { area as d3Area, line as d3Line } from 'd3-shape';
-import {
-  ChartDataPointWithDate,
-  useChartDataQuery,
-} from '../api/get-chart-data';
+import { ChartDataPoint, useChartDataQuery } from '../api/get-chart-data';
 
 interface MarketDataChartProps {
   days: number;
@@ -41,8 +38,8 @@ export function MarketDataChart({
   const marginBottom = 30;
   const marginLeft = 0;
 
-  const xAccessor = (d: ChartDataPointWithDate) => d.date;
-  const yAccessor = (d: ChartDataPointWithDate) => d[metric];
+  const xAccessor = (d: ChartDataPoint) => d.timestamp;
+  const yAccessor = (d: ChartDataPoint) => d[metric];
 
   const xScale = scaleUtc(
     extent(data, xAccessor) as ReturnType<typeof xAccessor>[],
@@ -54,17 +51,17 @@ export function MarketDataChart({
     [height - marginBottom, marginTop]
   );
 
-  const xAccessorScaled = (d: ChartDataPointWithDate) => xScale(xAccessor(d));
-  const yAccessorScaled = (d: ChartDataPointWithDate) => yScale(yAccessor(d));
+  const xAccessorScaled = (d: ChartDataPoint) => xScale(xAccessor(d));
+  const yAccessorScaled = (d: ChartDataPoint) => yScale(yAccessor(d));
 
-  const areaGenerator = d3Area<ChartDataPointWithDate>()
+  const areaGenerator = d3Area<ChartDataPoint>()
     .x(xAccessorScaled)
     .y0(yScale(0))
     .y1(yAccessorScaled);
 
   const area = areaGenerator(data)!;
 
-  const lineGenerator = d3Line<ChartDataPointWithDate>()
+  const lineGenerator = d3Line<ChartDataPoint>()
     .x(xAccessorScaled)
     .y(yAccessorScaled);
 

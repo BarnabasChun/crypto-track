@@ -71,10 +71,6 @@ export async function getChartData(
   throw data;
 }
 
-export type ChartDataPointWithDate = Omit<ChartDataPoint, 'timestamp'> & {
-  date: Date;
-};
-
 export const getChartDataQueryOptions = (
   id: string,
   params: z.output<typeof getChartDataParams>
@@ -82,8 +78,6 @@ export const getChartDataQueryOptions = (
   queryOptions({
     queryKey: ['coins', id, params],
     queryFn: () => getChartData(id, params),
-    select: (data): ChartDataPointWithDate[] =>
-      data.map(({ timestamp, ...d }) => ({ date: new Date(timestamp), ...d })),
   });
 
 export function useChartDataQuery(
