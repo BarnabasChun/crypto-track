@@ -68,6 +68,7 @@ export function MarketDataChart({
   const line = lineGenerator(data)!;
 
   const firstMetricValue = data[0][metric];
+  // TODO: handle !data.length
   const lastMetricValue = data.at(-1)![metric];
   const metricTrend =
     Math.sign(lastMetricValue - firstMetricValue) === 1
