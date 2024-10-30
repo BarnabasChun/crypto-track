@@ -54,16 +54,19 @@ export function MarketDataChart({
     [height - marginBottom, marginTop]
   );
 
+  const xAccessorScaled = (d: ChartDataPointWithDate) => xScale(xAccessor(d));
+  const yAccessorScaled = (d: ChartDataPointWithDate) => yScale(yAccessor(d));
+
   const areaGenerator = d3Area<ChartDataPointWithDate>()
-    .x((d) => xScale(xAccessor(d)))
+    .x(xAccessorScaled)
     .y0(yScale(0))
-    .y1((d) => yScale(yAccessor(d)));
+    .y1(yAccessorScaled);
 
   const area = areaGenerator(data)!;
 
   const lineGenerator = d3Line<ChartDataPointWithDate>()
-    .x((d) => xScale(xAccessor(d)))
-    .y((d) => yScale(yAccessor(d)));
+    .x(xAccessorScaled)
+    .y(yAccessorScaled);
 
   const line = lineGenerator(data)!;
 
