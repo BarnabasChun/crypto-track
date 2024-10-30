@@ -56,6 +56,12 @@ importers:
       d3-shape:
         specifier: ^3.2.0
         version: 3.2.0
+      d3-time:
+        specifier: ^3.1.0
+        version: 3.1.0
+      d3-time-format:
+        specifier: ^4.1.0
+        version: 4.1.0
       eslint-plugin-import:
         specifier: ^2.31.0
         version: 2.31.0(@typescript-eslint/parser@8.8.0(eslint@8.57.1)(typescript@5.6.2))(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@8.8.0(eslint@8.57.1)(typescript@5.6.2))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.8.0(eslint@8.57.1)(typescript@5.6.2))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
@@ -114,6 +120,12 @@ importers:
       '@types/d3-shape':
         specifier: ^3.1.6
         version: 3.1.6
+      '@types/d3-time':
+        specifier: ^3.0.3
+        version: 3.0.3
+      '@types/d3-time-format':
+        specifier: ^4.0.3
+        version: 4.0.3
       '@types/jest':
         specifier: ^29.5.13
         version: 29.5.13
@@ -1787,6 +1799,12 @@ packages:
     resolution:
       {
         integrity: sha512-5KKk5aKGu2I+O6SONMYSNflgiP0WfZIQvVUMan50wHsLG1G94JlxEVnCpQARfTtzytuY0p/9PXXZb3I7giofIA==,
+      }
+
+  '@types/d3-time-format@4.0.3':
+    resolution:
+      {
+        integrity: sha512-5xg9rC+wWL8kdDj153qZcsJ0FWiFt0J5RB6LYUNZjwSnesfblqrI/bJ1wBdJ8OQfncgbJG5+2F+qfqnqyzYxyg==,
       }
 
   '@types/d3-time@3.0.3':
@@ -7324,6 +7342,8 @@ snapshots:
   '@types/d3-shape@3.1.6':
     dependencies:
       '@types/d3-path': 3.1.0
+
+  '@types/d3-time-format@4.0.3': {}
 
   '@types/d3-time@3.0.3': {}
 

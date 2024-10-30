@@ -1,8 +1,9 @@
 import { useParams } from 'next/navigation';
-import { scaleUtc, scaleLinear } from 'd3-scale';
+import { scaleLinear, scaleTime } from 'd3-scale';
 import { extent } from 'd3-array';
 import { area as d3Area, line as d3Line } from 'd3-shape';
 import { ChartDataPoint, useChartDataQuery } from '../api/get-chart-data';
+import { contextualDateFormat } from '../utils/formatting';
 
 interface MarketDataChartProps {
   days: number;
@@ -41,10 +42,18 @@ export function MarketDataChart({
   const xAccessor = (d: ChartDataPoint) => d.timestamp;
   const yAccessor = (d: ChartDataPoint) => d[metric];
 
-  const xScale = scaleUtc(
+  const xAxisStartPosition = marginLeft;
+  const xAxisEndPosition = width - marginRight;
+
+  const xScale = scaleTime(
     extent(data, xAccessor) as ReturnType<typeof xAccessor>[],
-    [marginLeft, width - marginRight]
+    [xAxisStartPosition, xAxisEndPosition]
   );
+
+  const xAxisTicks = xScale.ticks().map((value) => ({
+    value: contextualDateFormat(value),
+    xOffset: xScale(value),
+  }));
 
   const yScale = scaleLinear(
     extent(data, yAccessor) as ReturnType<typeof yAccessor>[],
@@ -76,7 +85,12 @@ export function MarketDataChart({
       : 'negative';
 
   return (
-    <svg width={width} height={height}>
+    <svg
+      width={width}
+      height={height}
+      // TODO: remove border after dev complete... for spacial reference
+      className="border border-black"
+    >
       <path
         className={`${metricTrend === 'positive' ? 'fill-green-200' : 'fill-red-200'}`}
         d={area}
@@ -87,6 +101,23 @@ export function MarketDataChart({
         d={line}
         strokeWidth={2}
       />
+
+      <g>
+        {xAxisTicks.map(({ value, xOffset }) => (
+          <g key={`${value}-${xOffset}`} transform={`translate(${xOffset}, 0)`}>
+            <text
+              key={value}
+              style={{
+                fontSize: '10px',
+                textAnchor: 'middle',
+                transform: 'translateY(15px)',
+              }}
+            >
+              {value}
+            </text>
+          </g>
+        ))}
+      </g>
     </svg>
   );
 }
