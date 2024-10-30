@@ -1,6 +1,6 @@
 import { useParams } from 'next/navigation';
 import { scaleLinear, scaleTime } from 'd3-scale';
-import { extent } from 'd3-array';
+import { extent, min } from 'd3-array';
 import { area as d3Area, line as d3Line } from 'd3-shape';
 import { ChartDataPoint, useChartDataQuery } from '../api/get-chart-data';
 import { contextualDateFormat } from '../utils/formatting';
@@ -65,7 +65,7 @@ export function MarketDataChart({
 
   const areaGenerator = d3Area<ChartDataPoint>()
     .x(xAccessorScaled)
-    .y0(yScale(0))
+    .y0(yScale(min(data, yAccessor) as number))
     .y1(yAccessorScaled);
 
   const area = areaGenerator(data)!;
