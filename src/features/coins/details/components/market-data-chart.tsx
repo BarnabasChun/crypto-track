@@ -2,17 +2,16 @@ import { useParams } from 'next/navigation';
 import { scaleUtc, scaleLinear } from 'd3-scale';
 import { extent } from 'd3-array';
 import { area as d3Area, line as d3Line } from 'd3-shape';
-import { ChartDataPoint, useChartDataQuery } from '../api/get-chart-data';
+import {
+  ChartDataPointWithDate,
+  useChartDataQuery,
+} from '../api/get-chart-data';
 
 interface MarketDataChartProps {
   days: number;
   currency: string;
   metric: 'price' | 'marketCap';
 }
-
-type ChartDataPointWithDate = Omit<ChartDataPoint, 'timestamp'> & {
-  date: Date;
-};
 
 export function MarketDataChart({
   days,
@@ -42,20 +41,16 @@ export function MarketDataChart({
   const marginBottom = 30;
   const marginLeft = 0;
 
-  const dataWithDate: ChartDataPointWithDate[] = data.map(
-    ({ timestamp, ...d }) => ({ date: new Date(timestamp), ...d })
-  );
-
   const xAccessor = (d: ChartDataPointWithDate) => d.date;
   const yAccessor = (d: ChartDataPointWithDate) => d[metric];
 
   const xScale = scaleUtc(
-    extent(dataWithDate, xAccessor) as ReturnType<typeof xAccessor>[],
+    extent(data, xAccessor) as ReturnType<typeof xAccessor>[],
     [marginLeft, width - marginRight]
   );
 
   const yScale = scaleLinear(
-    extent(dataWithDate, yAccessor) as ReturnType<typeof yAccessor>[],
+    extent(data, yAccessor) as ReturnType<typeof yAccessor>[],
     [height - marginBottom, marginTop]
   );
 
@@ -64,16 +59,16 @@ export function MarketDataChart({
     .y0(yScale(0))
     .y1((d) => yScale(yAccessor(d)));
 
-  const area = areaGenerator(dataWithDate)!;
+  const area = areaGenerator(data)!;
 
   const lineGenerator = d3Line<ChartDataPointWithDate>()
     .x((d) => xScale(xAccessor(d)))
     .y((d) => yScale(yAccessor(d)));
 
-  const line = lineGenerator(dataWithDate)!;
+  const line = lineGenerator(data)!;
 
-  const firstMetricValue = dataWithDate[0][metric];
-  const lastMetricValue = dataWithDate.at(-1)![metric];
+  const firstMetricValue = data[0][metric];
+  const lastMetricValue = data.at(-1)![metric];
   const metricTrend =
     Math.sign(lastMetricValue - firstMetricValue) === 1
       ? 'positive'
