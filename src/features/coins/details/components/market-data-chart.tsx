@@ -1,31 +1,20 @@
-import { useParams } from 'next/navigation';
 import { scaleLinear, scaleTime } from 'd3-scale';
 import { extent, min } from 'd3-array';
 import { area as d3Area, line as d3Line } from 'd3-shape';
-import { ChartDataPoint, useChartDataQuery } from '../api/get-chart-data';
+import { ChartDataPoint } from '../api/get-chart-data';
 import { contextualDateFormat } from '../utils/formatting';
 import { useRef, useState } from 'react';
 import { useDebounceCallback } from 'usehooks-ts';
 import useResizeObserver, { type ObservedSize } from 'use-resize-observer';
 
 interface MarketDataChartProps {
-  days: number;
-  currency: string;
+  data: ChartDataPoint[];
   metric: 'price' | 'marketCap';
 }
 
 const MAX_CHART_WIDTH = 992;
 
-export function MarketDataChart({
-  days,
-  currency,
-  metric,
-}: MarketDataChartProps) {
-  const { id } = useParams();
-  const { status, data } = useChartDataQuery(id as string, {
-    days,
-    currency,
-  });
+export function MarketDataChart({ data, metric }: MarketDataChartProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(MAX_CHART_WIDTH);
   const appliedWidth = Math.min(width, MAX_CHART_WIDTH);
@@ -43,16 +32,6 @@ export function MarketDataChart({
     ref,
     onResize,
   });
-
-  if (status === 'error') {
-    return (
-      <div>We encountered an issue while trying to load the chart data.</div>
-    );
-  }
-
-  if (status === 'pending') {
-    return <div>Loading...</div>;
-  }
 
   const height = 300;
   const marginTop = 20;

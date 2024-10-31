@@ -5,14 +5,24 @@ import { ChartCandlestickIcon, ChartLineIcon } from 'lucide-react';
 import React, { useState } from 'react';
 import { CHART_RANGE_OPTIONS, DEFAULT_CHART_DATA_PARAMS } from '../constants';
 import { MarketDataChart } from './market-data-chart';
+import { useParams } from 'next/navigation';
+import { useChartDataQuery } from '../api/get-chart-data';
 
 export function ChartSection() {
+  const { id } = useParams();
   const [chartView, setChartView] = useState('line');
   const [chartMetric, setChartMetric] = useState<'price' | 'marketCap'>(
     'price'
   );
   const [timeRange, setTimeRange] = useState(
     `${DEFAULT_CHART_DATA_PARAMS.days}`
+  );
+  const { status: chartDataStatus, data: chartData } = useChartDataQuery(
+    id as string,
+    {
+      days: Number(timeRange),
+      currency: DEFAULT_CHART_DATA_PARAMS.currency,
+    }
   );
 
   return (
@@ -91,11 +101,13 @@ export function ChartSection() {
         </ToggleGroup>
       </div>
 
-      <MarketDataChart
-        days={Number(timeRange)}
-        currency={DEFAULT_CHART_DATA_PARAMS.currency}
-        metric={chartMetric}
-      />
+      {chartDataStatus === 'pending' && <div>Loading...</div>}
+      {chartDataStatus === 'error' && (
+        <div>We encountered an issue while trying to load the chart data.</div>
+      )}
+      {chartDataStatus === 'success' && (
+        <MarketDataChart data={chartData} metric={chartMetric} />
+      )}
     </section>
   );
 }
