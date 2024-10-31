@@ -23,7 +23,11 @@ export function ChartSection() {
           size="sm"
           className="border border-gray-200 rounded-sm p-1"
           value={chartView}
-          onValueChange={setChartView}
+          onValueChange={(value) => {
+            if (value) {
+              setChartView(value);
+            }
+          }}
         >
           <ToggleGroupItem value="line" aria-label="Toggle line chart">
             <ChartLineIcon className="h-4 w-4" />
@@ -41,9 +45,11 @@ export function ChartSection() {
           size="sm"
           className="border border-gray-200 rounded-sm p-1 flex-grow sm:flex-grow-0"
           value={chartMetric}
-          onValueChange={(value) =>
-            setChartMetric(value as 'price' | 'marketCap')
-          }
+          onValueChange={(value) => {
+            if (value) {
+              setChartMetric(value as 'price' | 'marketCap');
+            }
+          }}
         >
           <ToggleGroupItem
             className="flex-grow"
@@ -66,7 +72,11 @@ export function ChartSection() {
           size="sm"
           className="border border-gray-200 rounded-sm p-1 flex-grow sm:flex-grow-0"
           value={timeRange}
-          onValueChange={setTimeRange}
+          onValueChange={(value) => {
+            if (value) {
+              setTimeRange(value);
+            }
+          }}
         >
           {CHART_RANGE_OPTIONS.map(({ value, label, ariaLabel }) => (
             <ToggleGroupItem
