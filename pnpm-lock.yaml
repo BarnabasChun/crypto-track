@@ -50,6 +50,9 @@ importers:
       d3-array:
         specifier: ^3.2.4
         version: 3.2.4
+      d3-format:
+        specifier: ^3.1.0
+        version: 3.1.0
       d3-scale:
         specifier: ^4.0.2
         version: 4.0.2
@@ -117,6 +120,9 @@ importers:
       '@types/d3-array':
         specifier: ^3.2.1
         version: 3.2.1
+      '@types/d3-format':
+        specifier: ^3.0.4
+        version: 3.0.4
       '@types/d3-scale':
         specifier: ^4.0.8
         version: 4.0.8
@@ -1790,6 +1796,12 @@ packages:
     resolution:
       {
         integrity: sha512-Y2Jn2idRrLzUfAKV2LyRImR+y4oa2AntrgID95SHJxuMUrkNXmanDSed71sRNZysveJVt1hLLemQZIady0FpEg==,
+      }
+
+  '@types/d3-format@3.0.4':
+    resolution:
+      {
+        integrity: sha512-fALi2aI6shfg7vM5KiR1wNJnZ7r6UuggVqtDA+xiEdPZQwy/trcQaHnwShLuLdta2rTymCNpxYTiMZX/e09F4g==,
       }
 
   '@types/d3-path@3.1.0':
@@ -7352,6 +7364,8 @@ snapshots:
       '@babel/types': 7.25.7
 
   '@types/d3-array@3.2.1': {}
+
+  '@types/d3-format@3.0.4': {}
 
   '@types/d3-path@3.1.0': {}
 

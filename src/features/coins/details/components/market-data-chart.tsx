@@ -2,7 +2,7 @@ import { scaleLinear, scaleTime } from 'd3-scale';
 import { extent, min } from 'd3-array';
 import { area as d3Area, line as d3Line } from 'd3-shape';
 import { ChartDataPoint } from '../api/get-chart-data';
-import { contextualDateFormat } from '../utils/formatting';
+import { contextualDateFormat, marketDataFormatter } from '../utils/formatting';
 import { useRef, useState } from 'react';
 import { useDebounceCallback } from 'usehooks-ts';
 import useResizeObserver, { type ObservedSize } from 'use-resize-observer';
@@ -35,7 +35,7 @@ export function MarketDataChart({ data, metric }: MarketDataChartProps) {
 
   const height = 300;
   const marginTop = 20;
-  const marginRight = 30;
+  const marginRight = 40;
   const marginBottom = 20;
   const marginLeft = 0;
 
@@ -59,6 +59,13 @@ export function MarketDataChart({ data, metric }: MarketDataChartProps) {
     extent(data, yAccessor) as ReturnType<typeof yAccessor>[],
     [height - marginBottom, marginTop]
   );
+
+  const yAxisTicks = yScale.ticks().map((value) => {
+    return {
+      value: marketDataFormatter(value),
+      yOffset: yScale(value),
+    };
+  });
 
   const xAccessorScaled = (d: ChartDataPoint) => xScale(xAccessor(d));
   const yAccessorScaled = (d: ChartDataPoint) => yScale(yAccessor(d));
@@ -110,11 +117,29 @@ export function MarketDataChart({ data, metric }: MarketDataChartProps) {
               transform={`translate(${xOffset}, 0)`}
             >
               <text
-                key={value}
                 style={{
                   fontSize: '10px',
                   textAnchor: 'middle',
                   transform: 'translateY(15px)',
+                }}
+              >
+                {value}
+              </text>
+            </g>
+          ))}
+        </g>
+
+        <g transform={`translate(${appliedWidth - marginRight}, 0)`}>
+          {yAxisTicks.map(({ value, yOffset }) => (
+            <g
+              key={`${value}-${yOffset}`}
+              transform={`translate(0, ${yOffset})`}
+            >
+              <text
+                style={{
+                  fontSize: '10px',
+                  textAnchor: 'middle',
+                  transform: 'translateX(20px)',
                 }}
               >
                 {value}
