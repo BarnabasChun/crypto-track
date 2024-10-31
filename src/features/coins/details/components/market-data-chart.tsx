@@ -5,7 +5,8 @@ import { area as d3Area, line as d3Line } from 'd3-shape';
 import { ChartDataPoint, useChartDataQuery } from '../api/get-chart-data';
 import { contextualDateFormat } from '../utils/formatting';
 import { useRef, useState } from 'react';
-import { useDebounceCallback, useResizeObserver } from 'usehooks-ts';
+import { useDebounceCallback } from 'usehooks-ts';
+import useResizeObserver, { type ObservedSize } from 'use-resize-observer';
 
 interface MarketDataChartProps {
   days: number;
@@ -13,12 +14,7 @@ interface MarketDataChartProps {
   metric: 'price' | 'marketCap';
 }
 
-type Size = {
-  width: number;
-  height: number;
-};
-
-type UseResizeObserverSize = Partial<Size>;
+const MAX_CHART_WIDTH = 992;
 
 export function MarketDataChart({
   days,
@@ -31,27 +27,21 @@ export function MarketDataChart({
     currency,
   });
   const ref = useRef<HTMLDivElement>(null);
-  const [{ width, height }, setSize] = useState<Size>({
-    width: 928,
-    height: 500,
-  });
+  const [width, setWidth] = useState(MAX_CHART_WIDTH);
+  const appliedWidth = Math.min(width, MAX_CHART_WIDTH);
 
-  const handleResize = (size: UseResizeObserverSize) => {
-    if (size.height !== undefined && size.width !== undefined) {
-      setSize({
-        width: size.width,
-        height: size.height,
-      });
+  const handleResize = (size: ObservedSize) => {
+    if (size.width !== undefined) {
+      setWidth(size.width);
     }
   };
 
   const onResize = useDebounceCallback(handleResize, 200);
 
   useResizeObserver({
-    // @ts-expect-error `usehooks-ts` package has inaccurate typing.
+    // @ts-expect-error https://github.com/ZeeCoder/use-resize-observer/issues/108#issuecomment-2443327691
     ref,
     onResize,
-    box: 'border-box',
   });
 
   if (status === 'error') {
@@ -64,6 +54,7 @@ export function MarketDataChart({
     return <div>Loading...</div>;
   }
 
+  const height = 300;
   const marginTop = 20;
   const marginRight = 30;
   const marginBottom = 20;
@@ -73,7 +64,7 @@ export function MarketDataChart({
   const yAccessor = (d: ChartDataPoint) => d[metric];
 
   const xAxisStartPosition = marginLeft;
-  const xAxisEndPosition = width - marginRight;
+  const xAxisEndPosition = appliedWidth - marginRight;
 
   const xScale = scaleTime(
     extent(data, xAccessor) as ReturnType<typeof xAccessor>[],
@@ -117,7 +108,7 @@ export function MarketDataChart({
   return (
     <div ref={ref}>
       <svg
-        width={width}
+        width={appliedWidth}
         height={height}
         // TODO: remove border after dev complete... for spacial reference
         className="border border-black"
