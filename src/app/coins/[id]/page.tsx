@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
@@ -12,9 +13,25 @@ import {
 import { getChartDataQueryOptions } from '@/features/coins/details/api/get-chart-data';
 import { DEFAULT_CHART_DATA_PARAMS } from '@/features/coins/details/constants';
 
-export default async function CoinDetailsPage(props: {
+interface Props {
   params: Promise<{ id: string }>;
-}) {
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const id = (await params).id;
+
+  const [error, coinDetails] = await getCoin(id);
+
+  if (error?.statusCode === 404) {
+    notFound();
+  }
+
+  return {
+    title: `${coinDetails?.name} Price: ${coinDetails?.symbol} price, marketcap, and chart`,
+  };
+}
+
+export default async function CoinDetailsPage(props: Props) {
   const params = await props.params;
   const [error, coinDetails] = await getCoin(params.id);
 
